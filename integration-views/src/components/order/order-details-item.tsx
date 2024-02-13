@@ -4,12 +4,12 @@ import Text from '@commercetools-uikit/text';
 import { FormattedDate } from 'react-intl';
 import { FC } from 'react';
 
-export type Props = {
+export type DetailsItemProps = {
   date: number;
   headline: string;
   body: string;
 };
-const OrderDetailsItem: FC<Props> = ({ date, headline, body }) => {
+const OrderDetailsItem: FC<DetailsItemProps> = ({ date, headline, body }) => {
   return (
     <Spacings.Inline alignItems={'center'}>
       <CheckActiveIcon color={'primary'} />

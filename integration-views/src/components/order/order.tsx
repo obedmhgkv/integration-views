@@ -29,9 +29,9 @@ import {
 } from '@commercetools-uikit/icons';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import PrimaryButton from '@commercetools-uikit/primary-button';
+import { ComponentProps } from '../../routes';
 
-type Props = { orderId: string };
-const OrderDetails: FC<Props> = ({ orderId }) => {
+const Order: FC<ComponentProps> = ({ id }) => {
   const { dataLocale, projectLanguages } = useCustomViewContext((context) => ({
     dataLocale: context.dataLocale,
     projectLanguages: context.project?.languages,
@@ -69,7 +69,7 @@ const OrderDetails: FC<Props> = ({ orderId }) => {
     FetchOrder,
     {
       variables: {
-        id: orderId,
+        id: id,
       },
       context: {
         target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
@@ -271,4 +271,4 @@ const OrderDetails: FC<Props> = ({ orderId }) => {
   );
 };
 
-export default OrderDetails;
+export default Order;
