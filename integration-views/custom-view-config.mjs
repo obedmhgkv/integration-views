@@ -2,8 +2,8 @@
  * @type {import('@commercetools-frontend/application-config').ConfigOptionsForCustomView}
  */
 const config = {
-  name: 'Order Tracker',
-  cloudIdentifier: 'gcp-eu',
+  name: 'Integration Views',
+  cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
     development: {
       initialProjectKey: 'tech-sales-fashion-store',
@@ -11,8 +11,8 @@ const config = {
       hostUriPath: '/tech-sales-fashion-store/customers/d4245e5d-a986-4307-ac9a-df2246736d3a/general'
     },
     production: {
-      customViewId: 'TODO',
-      url: 'https://my-custom-view.com',
+      customViewId: '${env:CUSTOM_VIEW_ID}',
+      url: '${env:APPLICATION_URL}',
     },
   },
   headers: {
