@@ -6,9 +6,9 @@ const config = {
   cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
     development: {
-      initialProjectKey: 'tech-sales-fashion-store',
-      // hostUriPath: '/tech-sales-fashion-store/orders/6a6e41cb-3b2d-4a8a-9512-210c7e24c6ba/general'
-      hostUriPath: '/tech-sales-fashion-store/customers/d4245e5d-a986-4307-ac9a-df2246736d3a/general'
+      initialProjectKey: 'tech-sales-good-store',
+      hostUriPath: '/tech-sales-good-store/orders/5838b628-38d2-47c1-8576-a1faefa1c21f/general'
+      // hostUriPath: '/tech-sales-fashion-store/customers/d4245e5d-a986-4307-ac9a-df2246736d3a/general'
     },
     production: {
       customViewId: '${env:CUSTOM_VIEW_ID}',
