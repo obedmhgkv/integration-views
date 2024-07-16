@@ -7,8 +7,8 @@ const config = {
   env: {
     development: {
       initialProjectKey: 'tech-sales-good-store',
-      hostUriPath: '/tech-sales-good-store/orders/5838b628-38d2-47c1-8576-a1faefa1c21f/general'
-      // hostUriPath: '/tech-sales-fashion-store/customers/d4245e5d-a986-4307-ac9a-df2246736d3a/general'
+      // hostUriPath: '/tech-sales-good-store/orders/5838b628-38d2-47c1-8576-a1faefa1c21f/general'
+      hostUriPath: '/tech-sales-good-store/customers/f52e4230-a1f9-4f49-b6eb-af33fba3ddad/general'
     },
     production: {
       customViewId: '${env:CUSTOM_VIEW_ID}',
@@ -26,7 +26,7 @@ const config = {
     }
   },
   oAuthScopes: {
-    view: ['view_orders', 'view_customers'],
+    view: ['view_orders', 'view_customers', 'view_shopping_lists'],
     manage: [],
   },
   type: 'CustomPanel',

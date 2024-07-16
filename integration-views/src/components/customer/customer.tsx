@@ -1,43 +1,31 @@
 import { FC } from 'react';
-import { useMcQuery } from '@commercetools-frontend/application-shell';
-import { TQuery, TQuery_CustomerArgs } from '../../types/generated/ctp';
-import FetchOrder from './fetch-customer.ctp.graphql';
-import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import { ContentNotification } from '@commercetools-uikit/notifications';
 import { getErrorMessage } from '../../helpers';
 import Text from '@commercetools-uikit/text';
-import { InfoMainPage } from '@commercetools-frontend/application-components';
+import {
+  TabHeader,
+  TabularMainPage,
+} from '@commercetools-frontend/application-components';
 import Spacings from '@commercetools-uikit/spacings';
 import {
   PlusBoldIcon,
   ExportIcon,
   SpeechBubbleIcon,
-  BrainIcon,
-  CartIcon,
-  PaperBillInvertedIcon,
-  UserLinearIcon,
 } from '@commercetools-uikit/icons';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import { ComponentProps } from '../../routes';
-import InfoCard from '../info-card/info-card';
-import { useIntl } from 'react-intl';
-import { customProperties } from '@commercetools-uikit/design-system';
-import Grid from '@commercetools-uikit/grid';
+import { useCustomerFetcher } from '../../hooks/use-customer-connector/use-customers-connector';
+import { Route, Switch, useRouteMatch } from 'react-router';
+import CustomerDashboard from '../customer-dashboard/customer-dashboard';
+import CustomerCarts from '../customer-carts/customer-carts';
+import CustomerShoppingLists from '../customer-shopping-lists/customer-shopping-lists';
 
 const Customer: FC<ComponentProps> = ({ id }) => {
-  const { formatNumber } = useIntl();
-  const { data, error, loading } = useMcQuery<TQuery, TQuery_CustomerArgs>(
-    FetchOrder,
-    {
-      variables: {
-        id: id,
-      },
-      context: {
-        target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
-      },
-    }
-  );
+  const match = useRouteMatch();
+  const { customer, error, loading } = useCustomerFetcher({
+    id: id,
+  });
 
   if (error) {
     return (
@@ -47,7 +35,7 @@ const Customer: FC<ComponentProps> = ({ id }) => {
     );
   }
 
-  if (!loading && !data?.customer) {
+  if (!loading && !customer) {
     return (
       <ContentNotification type="info">
         <Text.Body>No Results</Text.Body>
@@ -55,13 +43,11 @@ const Customer: FC<ComponentProps> = ({ id }) => {
     );
   }
 
-  const today = new Date();
-
   return (
-    <InfoMainPage
+    <TabularMainPage
       customTitleRow={
         <Spacings.Inline justifyContent="space-between">
-          <Text.Headline as="h2">Customer Data</Text.Headline>
+          <Text.Headline as="h2">Customer View</Text.Headline>
           <Spacings.Inline justifyContent="space-between">
             <PrimaryButton iconLeft={<PlusBoldIcon />} label={'Open in CRM'} />
             <SecondaryButton
@@ -75,125 +61,30 @@ const Customer: FC<ComponentProps> = ({ id }) => {
           </Spacings.Inline>
         </Spacings.Inline>
       }
-      subtitle={'This data is coming directly from the CRM System'}
+      tabControls={
+        <>
+          <TabHeader
+            to={`${match.url}`}
+            label="Customer Dashboard"
+            exactPathMatch={true}
+          />
+          <TabHeader to={`${match.url}/carts`} label="Carts" />
+          <TabHeader to={`${match.url}/shopping-lists`} label="Shopping List" />
+        </>
+      }
     >
-      <Grid
-        gridGap="16px"
-        gridAutoColumns="1fr"
-        gridTemplateColumns="repeat(3, 1fr)"
-      >
-        <Grid.Item>
-          <InfoCard
-            title={'Loyalty Program'}
-            text={formatNumber(1385)}
-            icon={<BrainIcon color={'neutral60'} />}
-            infos={[
-              { label: 'Premium', tone: 'primary', value: formatNumber(1234) },
-              { label: 'Status', tone: 'secondary', value: formatNumber(23) },
-              {
-                label: 'Latest',
-                tone: 'information',
-                value: formatNumber(423),
-              },
-            ]}
-            ctaText={'Open Loyalty App'}
-          />
-        </Grid.Item>
-        <Grid.Item>
-          <InfoCard
-            title={'Order Summary'}
-            text={'21'}
-            icon={<CartIcon color={'neutral60'} />}
-            infos={[
-              { label: 'Open', tone: 'information', value: formatNumber(1) },
-              {
-                label: 'Confirmed',
-                tone: 'information',
-                value: formatNumber(1),
-              },
-              { label: 'Complete', tone: 'positive', value: formatNumber(17) },
-              { label: 'Canceled', tone: 'warning', value: formatNumber(2) },
-              { label: 'Lost', tone: 'critical', value: formatNumber(0) },
-            ]}
-            ctaText={'Open OMS'}
-          />
-        </Grid.Item>
-        <Grid.Item>
-          <InfoCard
-            title={'Preferred Categories'}
-            text={'to buy from'}
-            icon={<PaperBillInvertedIcon color={'neutral60'} />}
-            data={[
-              {
-                name: 'Home Decor',
-                frequency: 7,
-                primaryColor: customProperties.colorPrimary85,
-                secondaryColor: customProperties.colorPrimary40,
-              },
-              {
-                name: 'Kitchen',
-                frequency: 25,
-                primaryColor: customProperties.colorPurple90,
-                secondaryColor: customProperties.colorPurple50,
-              },
-            ]}
-            ctaText={'Open Buying History'}
-          />
-        </Grid.Item>
-        <Grid.Item>
-          <InfoCard
-            title={'Payment Summary'}
-            text={formatNumber(57)}
-            icon={<PaperBillInvertedIcon color={'neutral60'} />}
-            data={[
-              {
-                name: 'Credit Card',
-                frequency: 7,
-                primaryColor: customProperties.colorPrimary85,
-                secondaryColor: customProperties.colorPrimary40,
-              },
-              {
-                name: 'Paypal',
-                frequency: 25,
-                primaryColor: customProperties.colorPurple90,
-                secondaryColor: customProperties.colorPurple50,
-              },
-              {
-                name: 'Pickup & Cash',
-                frequency: 25,
-                primaryColor: customProperties.colorTurquoise90,
-                secondaryColor: customProperties.colorTurquoise50,
-              },
-            ]}
-            ctaText={'Open PSP'}
-          />
-        </Grid.Item>
-        <Grid.Item>
-          <InfoCard
-            title={'Contact History'}
-            text={'5 Contacts'}
-            icon={<UserLinearIcon color={'neutral60'} />}
-            listData={[
-              {
-                date: today.setDate(today.getDate() - 1),
-                headline: 'Call',
-                body: 'Waiting for parcel',
-              },
-              {
-                date: today.setDate(today.getDate() - 1),
-                headline: 'Newsletter Click',
-                body: 'on product 4712',
-              },
-              {
-                date: today.setDate(today.getDate() - 1),
-                headline: 'Newsletter Click',
-                body: 'on category "Kitchen"',
-              },
-            ]}
-          />
-        </Grid.Item>
-      </Grid>
-    </InfoMainPage>
+      <Switch>
+        <Route path={`${match.path}`} exact={true}>
+          <CustomerDashboard />
+        </Route>
+        <Route path={`${match.path}/carts`}>
+          <CustomerCarts id={id} />
+        </Route>
+        <Route path={`${match.path}/shopping-lists`}>
+          <CustomerShoppingLists id={id} />
+        </Route>
+      </Switch>
+    </TabularMainPage>
   );
 };
 
