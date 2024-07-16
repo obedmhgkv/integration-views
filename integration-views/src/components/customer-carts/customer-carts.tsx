@@ -34,7 +34,7 @@ export const CustomerCarts: FC<Props> = ({ id }) => {
     dataLocale: context.dataLocale ?? '',
   }));
   const paginationState = usePaginationState();
-  const { carts, loading, error } = useCartsFetcher({
+  const { carts, loading, error, refetch } = useCartsFetcher({
     limit: paginationState.perPage.value,
     offset: (paginationState.page.value - 1) * paginationState.perPage.value,
     sort: [`${tableSorting.value.key} ${tableSorting.value.order}`],
@@ -74,6 +74,9 @@ export const CustomerCarts: FC<Props> = ({ id }) => {
             onRowClick={(row) => push(`${match.url}/${row.id}`)}
             totalItems={carts.total}
             paginationState={paginationState}
+            onChange={async () => {
+              await refetch();
+            }}
           />
         </PageContentFull>
       )}

@@ -5,6 +5,7 @@ import {
   THighPrecisionMoney,
 } from './types/generated/ctp';
 import { IntlShape } from 'react-intl';
+import omitEmpty from 'omit-empty-es';
 
 export const getErrorMessage = (error: ApolloError) =>
   error.graphQLErrors?.map((e) => e.message).join('\n') || error.message;
@@ -75,4 +76,29 @@ export const formatAddress = (address?: TAddress | null) => {
     [name, addressAsString, address.postalCode, address.city, address.country],
     ', '
   );
+};
+
+export const transformErrors = (apiErrors: Array<any> | any) => {
+  const formErrors: Array<any> = [];
+  const unmappedErrors: Array<any> = [];
+
+  if (!Array.isArray(apiErrors))
+    return {
+      formErrors,
+      unmappedErrors: [apiErrors],
+    };
+
+  apiErrors.forEach((graphQLError) => {
+    if (
+      (graphQLError?.extensions?.code ?? graphQLError?.code) ===
+      'DiscountCodeNonApplicable'
+    ) {
+    }
+    return unmappedErrors.push(graphQLError);
+  });
+
+  return {
+    formErrors: omitEmpty(formErrors),
+    unmappedErrors,
+  };
 };

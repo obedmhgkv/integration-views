@@ -20,6 +20,8 @@ import CheckboxInput from '@commercetools-uikit/checkbox-input';
 import { Pagination } from '@commercetools-uikit/pagination';
 import { TPaginationState } from '@commercetools-uikit/hooks/dist/declarations/src/use-pagination-state/use-pagination-state';
 import Spacings from '@commercetools-uikit/spacings';
+import SelectField from '@commercetools-uikit/select-field';
+import CustomerCartsUpdate from '../customer-carts-update/customer-carts-update';
 
 type Props = {
   items: Array<TCart>;
@@ -27,6 +29,7 @@ type Props = {
   onRowClick?: (row: TCart, rowIndex: number, columnKey: string) => void;
   paginationState?: TPaginationState;
   totalItems?: number;
+  onChange?: () => Promise<void>;
 };
 
 const KEY_NAME = 'checkbox';
@@ -37,6 +40,7 @@ export const CustomerCartsTable: FC<Props> = ({
   onRowClick,
   paginationState,
   totalItems = -1,
+  onChange,
 }) => {
   const intl = useIntl();
   const {
@@ -67,6 +71,10 @@ export const CustomerCartsTable: FC<Props> = ({
 
   const [isCondensed, setIsCondensed] = useState<boolean>(true);
   const [isWrappingText, setIsWrappingText] = useState<boolean>(false);
+  const [isUpdateCartOpen, setIsUpdateCartOpen] = useState(false);
+  const [selectedAction, setSelectedAction] = useState<
+    'delete' | 'freeze' | 'unfreeze'
+  >();
 
   const itemRenderer = (item: TCart, column: TColumn<TCart>) => {
     switch (column.key) {
@@ -164,6 +172,25 @@ export const CustomerCartsTable: FC<Props> = ({
   ];
   return (
     <Spacings.Stack scale="m">
+      <SelectField
+        name={'actions'}
+        title={''}
+        horizontalConstraint={5}
+        placeholder={'Actions'}
+        options={[
+          { value: 'delete', label: 'Delete' },
+          { value: 'freeze', label: 'Freeze Cart' },
+          { value: 'unfreeze', label: 'Unfreeze Cart' },
+        ]}
+        onChange={(event) => {
+          setSelectedAction(
+            event.target.value as 'delete' | 'freeze' | 'unfreeze'
+          );
+          setIsUpdateCartOpen(true);
+        }}
+        isDisabled={getNumberOfSelectedRows() === 0}
+        value={selectedAction}
+      />
       <DataTableManager
         columns={columnsWithSelect}
         columnManager={columnManager}
@@ -192,6 +219,20 @@ export const CustomerCartsTable: FC<Props> = ({
           perPage={paginationState.perPage.value}
           onPerPageChange={paginationState.perPage.onChange}
           totalItems={totalItems}
+        />
+      )}
+      {isUpdateCartOpen && selectedAction && (
+        <CustomerCartsUpdate
+          onClose={() => {
+            setIsUpdateCartOpen(false);
+            onChange && onChange();
+          }}
+          onCancel={() => {
+            setIsUpdateCartOpen(false);
+            onChange && onChange();
+          }}
+          items={rowsWithSelection.filter((item) => item[KEY_NAME])}
+          action={selectedAction}
         />
       )}
     </Spacings.Stack>
