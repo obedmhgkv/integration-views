@@ -94,6 +94,9 @@ export const CustomerCartsTable: FC<Props> = ({
           case 'Ordered':
             tone = 'information';
             break;
+          case 'Frozen':
+            tone = 'warning';
+            break;
         }
         return <Stamp tone={tone} label={item.cartState} isCondensed={true} />;
       }
