@@ -379,79 +379,79 @@ fragment CartFragment on Cart {
             }
         }
     }
-#    customLineItems {
-#        id
-#        quantity
-#        slug
-#        taxedPricePortions {
-#            shippingMethodKey
-#            taxedPrice {
-#                totalNet {
-#                    ...MoneyFragment
-#                }
-#                totalGross {
-#                    ...MoneyFragment
-#                }
-#                totalTax {
-#                    ...MoneyFragment
-#                }
-#            }
-#        }
-#        perMethodTaxRate {
-#            shippingMethodKey
-#            taxRate {
-#                ...TaxRateFragmentOnOrder
-#            }
-#        }
-#        shippingDetails {
-#            targets {
-#                addressKey
-#                quantity
-#                shippingMethodKey
-#            }
-#        }
-#        nameAllLocales {
-#            locale
-#            value
-#        }
-#        custom {
-#            type {
-#                ...CustomFieldsTypeFragment
-#            }
-#            customFieldsRaw {
-#                name
-#                value
-#            }
-#        }
-#        discountedPricePerQuantity {
-#            ...DiscountedPricePerQuantityFragment
-#        }
-#        totalPrice {
-#            ...MoneyFragment
-#        }
-#        taxedPrice {
-#            totalNet {
-#                ...MoneyFragment
-#            }
-#            totalGross {
-#                ...MoneyFragment
-#            }
-#        }
-#        taxRate {
-#            ...TaxRateFragmentOnOrder
-#        }
-#        money {
-#            type
-#            fractionDigits
-#            currencyCode
-#            ... on HighPrecisionMoney {
-#                preciseAmount
-#            }
-#            ... on Money {
-#                centAmount
-#            }
-#        }
-#    }
+    customLineItems {
+        id
+        quantity
+        slug
+        taxedPricePortions {
+            shippingMethodKey
+            taxedPrice {
+                totalNet {
+                    ...MoneyFragment
+                }
+                totalGross {
+                    ...MoneyFragment
+                }
+                totalTax {
+                    ...MoneyFragment
+                }
+            }
+        }
+        perMethodTaxRate {
+            shippingMethodKey
+            taxRate {
+                ...TaxRateFragmentOnOrder
+            }
+        }
+        shippingDetails {
+            targets {
+                addressKey
+                quantity
+                shippingMethodKey
+            }
+        }
+        nameAllLocales {
+            locale
+            value
+        }
+        custom {
+            type {
+                ...CustomFieldsTypeFragment
+            }
+            customFieldsRaw {
+                name
+                value
+            }
+        }
+        discountedPricePerQuantity {
+            ...DiscountedPricePerQuantityFragment
+        }
+        totalPrice {
+            ...MoneyFragment
+        }
+        taxedPrice {
+            totalNet {
+                ...MoneyFragment
+            }
+            totalGross {
+                ...MoneyFragment
+            }
+        }
+        taxRate {
+            ...TaxRateFragmentOnOrder
+        }
+        money {
+            type
+            fractionDigits
+            currencyCode
+            ... on HighPrecisionMoney {
+                preciseAmount
+            }
+            ... on Money {
+                centAmount
+            }
+        }
+    }
     inventoryMode
     itemShippingAddresses {
         ...Address
@@ -495,15 +495,15 @@ fragment CartFragment on Cart {
             locale
             value
         }
-        custom {
-            type {
-                ...CustomFieldsTypeFragment
-            }
-            customFieldsRaw {
-                name
-                value
-            }
-        }
+#        custom {
+#            type {
+#                ...CustomFieldsTypeFragment
+#            }
+#            customFieldsRaw {
+#                name
+#                value
+#            }
+#        }
         discountedPricePerQuantity {
             ...DiscountedPricePerQuantityFragment
         }

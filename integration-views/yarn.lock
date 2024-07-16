@@ -2498,6 +2498,42 @@
     lodash "4.17.21"
     prop-types "15.8.1"
 
+"@commercetools-uikit/collapsible-motion@19.7.0":
+  version "19.7.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/collapsible-motion/-/collapsible-motion-19.7.0.tgz#9276bd6702b4c71df8f6270843402b485f27fa29"
+  integrity sha512-tbI7CEFcu4scS+sLn8wXUvYUVrEi16mRhptMUsFEZW5v+k5VKlTfCKJaePyb1zKpMT7wYb53PM/flIObY8oKDg==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/hooks" "19.7.0"
+    "@commercetools-uikit/utils" "19.7.0"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    lodash "4.17.21"
+    prop-types "15.8.1"
+
+"@commercetools-uikit/collapsible-panel@^19.7.0":
+  version "19.7.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/collapsible-panel/-/collapsible-panel-19.7.0.tgz#b8cc181d2239501c1fb58e29127d24e5365bf8b5"
+  integrity sha512-/1quJBPFZ/o95wgbb6ziv6DJ5VlddO/HoQa4mktCgqTKDw6Xx/iYQURsgYHebaXvJhDpcwfuYWL6+ZD77kIKdw==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/accessible-button" "19.7.0"
+    "@commercetools-uikit/collapsible-motion" "19.7.0"
+    "@commercetools-uikit/constraints" "19.7.0"
+    "@commercetools-uikit/design-system" "19.7.0"
+    "@commercetools-uikit/hooks" "19.7.0"
+    "@commercetools-uikit/icons" "19.7.0"
+    "@commercetools-uikit/spacings" "19.7.0"
+    "@commercetools-uikit/text" "19.7.0"
+    "@commercetools-uikit/utils" "19.7.0"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    lodash "4.17.21"
+    prop-types "15.8.1"
+    react-intl "^6.3.2"
+
 "@commercetools-uikit/constraints@19.6.0", "@commercetools-uikit/constraints@^19.2.0", "@commercetools-uikit/constraints@^19.6.0":
   version "19.6.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/constraints/-/constraints-19.6.0.tgz#df2a9e5eeaf74fd7cfcb031fe1297e49ca72fd4b"
@@ -2507,6 +2543,19 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/design-system" "19.6.0"
     "@commercetools-uikit/utils" "19.6.0"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    prop-types "15.8.1"
+
+"@commercetools-uikit/constraints@19.7.0":
+  version "19.7.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/constraints/-/constraints-19.7.0.tgz#cbafcb5d9d714558c5d11616181bfb46684b071e"
+  integrity sha512-y1OxLOLGAwdxD1ABKmBscksLlMOzeITb/jBSMq8gdXIxz6foZEKTKSt1JjWXz7/YlEb5V9DapgWxuBioybaTqQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "19.7.0"
+    "@commercetools-uikit/utils" "19.7.0"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     prop-types "15.8.1"

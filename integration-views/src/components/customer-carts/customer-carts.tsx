@@ -17,7 +17,9 @@ import { useIntl } from 'react-intl';
 import messages from './messages';
 import { useCustomViewContext } from '@commercetools-frontend/application-shell-connectors';
 import CustomerCartsTable from '../customer-carts-table/customer-carts-table';
-import { useHistory, useRouteMatch } from 'react-router';
+import { Switch, useHistory, useRouteMatch } from 'react-router';
+import { SuspendedRoute } from '@commercetools-frontend/application-shell';
+import CustomerCart from '../customer-cart/customer-cart';
 
 type Props = { id: string };
 
@@ -80,6 +82,16 @@ export const CustomerCarts: FC<Props> = ({ id }) => {
           />
         </PageContentFull>
       )}
+      <Switch>
+        <SuspendedRoute path={`${match.path}/:id`}>
+          <CustomerCart
+            onClose={async () => {
+              await refetch();
+              push(`${match.url}`);
+            }}
+          />
+        </SuspendedRoute>
+      </Switch>
     </>
   );
 };

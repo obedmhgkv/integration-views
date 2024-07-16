@@ -2,7 +2,9 @@ import { ApolloError, isApolloError, ServerError } from '@apollo/client';
 import {
   TAddress,
   TBaseMoney,
+  TCustomLineItem,
   THighPrecisionMoney,
+  TLineItem,
 } from './types/generated/ctp';
 import { IntlShape } from 'react-intl';
 import omitEmpty from 'omit-empty-es';
@@ -101,4 +103,30 @@ export const transformErrors = (apiErrors: Array<any> | any) => {
     formErrors: omitEmpty(formErrors),
     unmappedErrors,
   };
+};
+
+export function notEmpty<TValue>(
+  value: TValue | null | undefined
+): value is TValue {
+  return value !== null && value !== undefined;
+}
+
+export function convertRatioToPercentage(ratio: number) {
+  return parseFloat((ratio * 100).toFixed(2));
+}
+
+export function formatPercentage(percentage: number) {
+  return `${percentage}%`;
+}
+
+export const isCustomLineItem = (
+  object: TCustomLineItem | TLineItem
+): object is TCustomLineItem => {
+  return 'money' in object;
+};
+
+export const isLineItem = (
+  object: TCustomLineItem | TLineItem
+): object is TLineItem => {
+  return 'price' in object;
 };
