@@ -17,6 +17,9 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useShoppingListsFetcher } from '../../hooks/use-shopping-lists-hook';
 import { getErrorMessage } from '../../helpers';
 import { TShoppingList } from '../../types/generated/ctp';
+import { SuspendedRoute } from '@commercetools-frontend/application-shell';
+import { Switch } from 'react-router';
+import CustomerShoppingList from '../customer-shopping-list/customer-shopping-list';
 
 type Props = { id: string };
 
@@ -25,7 +28,7 @@ export const CustomerShoppingLists: FC<Props> = ({ id }) => {
   const { push } = useHistory();
   const match = useRouteMatch();
 
-  const { shoppingLists, loading, error } = useShoppingListsFetcher({
+  const { shoppingLists, loading, error, refetch } = useShoppingListsFetcher({
     limit: perPage.value,
     offset: (page.value - 1) * perPage.value,
     where: `customer(id="${id}")`,
@@ -104,6 +107,16 @@ export const CustomerShoppingLists: FC<Props> = ({ id }) => {
         onPerPageChange={perPage.onChange}
         totalItems={shoppingLists.total}
       />
+      <Switch>
+        <SuspendedRoute path={`${match.path}/:id`}>
+          <CustomerShoppingList
+            onClose={() => {
+              refetch();
+              push(match.url);
+            }}
+          />
+        </SuspendedRoute>
+      </Switch>
     </Spacings.Stack>
   );
 };

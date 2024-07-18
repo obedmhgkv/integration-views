@@ -1,7 +1,7 @@
 import messages from './messages';
 import { FC } from 'react';
 import Text from '@commercetools-uikit/text';
-import { TCustomLineItem, TLineItem } from '../../types/generated/ctp';
+import { TCustomLineItem, TLineItem } from '../../../types/generated/ctp';
 
 interface CartItemTableInventoryCellProps {
   lineItem: TLineItem | TCustomLineItem;

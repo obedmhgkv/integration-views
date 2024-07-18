@@ -4,7 +4,7 @@ import { formatMoney } from '../../../helpers';
 import Text from '@commercetools-uikit/text';
 import messages from '../cart-item-table-product-discount/messages';
 import CartItemTableProductDiscount from '../cart-item-table-product-discount';
-import { TCustomLineItem, TLineItem } from '../../types/generated/ctp';
+import { TCustomLineItem, TLineItem } from '../../../types/generated/ctp';
 import { useIntl } from 'react-intl';
 
 interface Props {

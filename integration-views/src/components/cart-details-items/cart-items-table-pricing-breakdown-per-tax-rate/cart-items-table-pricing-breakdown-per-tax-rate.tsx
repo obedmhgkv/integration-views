@@ -22,7 +22,7 @@ import {
   TDiscountedLineItemPortion,
   TLineItem,
   TShipping,
-} from '../../types/generated/ctp';
+} from '../../../types/generated/ctp';
 import { isCustomLineItem, isLineItem } from '../../../helpers';
 
 // We only care about the `discountAmount.centAmount` value as it represents the total discount over a single quantity

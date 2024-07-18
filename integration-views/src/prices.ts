@@ -1,4 +1,3 @@
-import isNil from 'lodash/isNil';
 import { PRECISION_TYPES } from './constants';
 import { getFractionedAmount } from './helpers';
 

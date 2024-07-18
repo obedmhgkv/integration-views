@@ -6,7 +6,7 @@ import { formatMoney } from '../../../helpers';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import { FC } from 'react';
-import { TCustomLineItem, TLineItem } from '../../types/generated/ctp';
+import { TCustomLineItem, TLineItem } from '../../../types/generated/ctp';
 import { formatLocalizedString } from '@commercetools-frontend/l10n';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 

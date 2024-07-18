@@ -27,7 +27,7 @@ const config = {
   },
   oAuthScopes: {
     view: ['view_orders', 'view_customers', 'view_shopping_lists'],
-    manage: ['manage_orders'],
+    manage: ['manage_orders', 'manage_shopping_lists'],
   },
   type: 'CustomPanel',
   typeSettings: {
