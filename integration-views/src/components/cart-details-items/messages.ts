@@ -116,4 +116,10 @@ export default defineMessages({
     description: 'Total of table label',
     defaultMessage: 'Total',
   },
+  cartUpdated: {
+    id: 'Orders.Create.Step.LineItems.cartUpdated',
+    description:
+      'Label for the confirmation message when line item added to the cart',
+    defaultMessage: 'The cart has been successfully updated',
+  },
 });

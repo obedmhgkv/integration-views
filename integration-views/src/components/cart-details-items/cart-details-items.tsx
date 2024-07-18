@@ -1,4 +1,9 @@
-import { TCart, TCustomLineItem, TLineItem } from '../../types/generated/ctp';
+import {
+  TCart,
+  TCartUpdateAction,
+  TCustomLineItem,
+  TLineItem,
+} from '../../types/generated/ctp';
 import { FC, useState } from 'react';
 import DataTable, { TColumn } from '@commercetools-uikit/data-table';
 import DataTableManager, {
@@ -10,7 +15,7 @@ import { Link } from 'react-router-dom';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { formatMoney } from '../../helpers';
+import { formatMoney, isCustomLineItem } from '../../helpers';
 import { SHIPPING_MODES } from '../addresses-panel/addresses-panel';
 import {
   determineIfTaxIncludedInPrice,
@@ -31,17 +36,53 @@ import CartItemTableUnitPriceCell from './cart-item-table-unit-price-cell';
 import CartItemTableTaxRateCell from './cart-item-table-tax-rate-cell';
 import CartItemTableSubtotalPriceCell from './cart-item-table-subtotal-price-cell';
 import CartItemTableTotalPriceCell from './cart-item-table-total-price-cell';
+import QuantitySelector from '../quantity-selector';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
+import { useCartUpdater } from '../../hooks/use-carts-hook';
+import { DOMAINS } from '@commercetools-frontend/constants';
 
 type Props = { cart: TCart };
 
 const CartDetailsItems: FC<Props> = ({ cart }) => {
+  const showNotification = useShowNotification();
   const intl = useIntl();
+  const cartUpdater = useCartUpdater();
   const [isCondensed, setIsCondensed] = useState<boolean>(true);
   const [isWrappingText, setIsWrappingText] = useState<boolean>(false);
 
   const { dataLocale } = useApplicationContext((context) => ({
     dataLocale: context.dataLocale ?? '',
   }));
+
+  const handleChangeQuantity = async ({
+    quantity,
+    id,
+    isCustomLineItem,
+  }: {
+    quantity: number;
+    id: string;
+    isCustomLineItem: boolean;
+  }) => {
+    const action: TCartUpdateAction = isCustomLineItem
+      ? {
+          changeCustomLineItemQuantity: {
+            customLineItemId: id,
+            quantity,
+          },
+        }
+      : { changeLineItemQuantity: { lineItemId: id, quantity } };
+    await cartUpdater.execute({
+      updateActions: [action],
+      id: cart.id,
+      version: cart.version,
+      locale: dataLocale,
+    });
+    showNotification({
+      kind: 'success',
+      domain: DOMAINS.SIDE,
+      text: intl.formatMessage(messages.cartUpdated),
+    });
+  };
 
   const { data } = useCurrencies(dataLocale);
 
@@ -110,7 +151,18 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
         // unit price, only visible when tax is included in price
         return <CartItemTableUnitNetPriceCell lineItem={lineItem} />;
       case 'quantity':
-        return lineItem.quantity;
+        return (
+          <QuantitySelector
+            onChange={(quantity) =>
+              handleChangeQuantity({
+                quantity: quantity,
+                id: lineItem.id,
+                isCustomLineItem: isCustomLineItem(lineItem),
+              })
+            }
+            quantity={lineItem.quantity}
+          />
+        );
       case 'taxRate':
         return (
           <CartItemTableTaxRateCell
@@ -134,8 +186,9 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
           />
         );
       default:
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (lineItem as any)[column.key] || '';
+        return (
+          lineItem[column.key as keyof (TLineItem | TCustomLineItem)] || ''
+        );
     }
   };
 

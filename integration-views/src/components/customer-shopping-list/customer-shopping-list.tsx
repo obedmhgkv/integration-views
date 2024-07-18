@@ -32,13 +32,13 @@ import {
   showApiErrorNotification,
   useShowNotification,
 } from '@commercetools-frontend/actions-global';
-import NumberInput from '@commercetools-uikit/number-input';
 import Constraints from '@commercetools-uikit/constraints';
 import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
 import { PERMISSIONS } from '../../constants';
 import { ProductValue } from '../variant-search/product-search-input';
 import { ProductSearchInput } from '../variant-search';
 import ImageContainer from '../image-container';
+import QuantitySelector from '../quantity-selector';
 
 type Props = {
   onClose: () => void;
@@ -206,14 +206,11 @@ export const CustomerShoppingList: FC<Props> = ({ onClose }) => {
         );
       case 'quantity':
         return (
-          <NumberInput
-            onChange={async (event) => {
-              await handleChangeQuantity(
-                item.id,
-                parseFloat(event.target.value)
-              );
-            }}
-            value={item.quantity}
+          <QuantitySelector
+            onChange={async (quantity) =>
+              await handleChangeQuantity(item.id, quantity)
+            }
+            quantity={item.quantity}
           />
         );
       default:
