@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { formatMoney, isCustomLineItem } from '../../helpers';
+import { formatMoney, isCustomLineItem, transformErrors } from '../../helpers';
 import { SHIPPING_MODES } from '../addresses-panel/addresses-panel';
 import {
   determineIfTaxIncludedInPrice,
@@ -37,14 +37,24 @@ import CartItemTableTaxRateCell from './cart-item-table-tax-rate-cell';
 import CartItemTableSubtotalPriceCell from './cart-item-table-subtotal-price-cell';
 import CartItemTableTotalPriceCell from './cart-item-table-total-price-cell';
 import QuantitySelector from '../quantity-selector';
-import { useShowNotification } from '@commercetools-frontend/actions-global';
+import {
+  useShowApiErrorNotification,
+  useShowNotification,
+} from '@commercetools-frontend/actions-global';
 import { useCartUpdater } from '../../hooks/use-carts-hook';
 import { DOMAINS } from '@commercetools-frontend/constants';
+import Constraints from '@commercetools-uikit/constraints';
+import { ProductSearchInput } from '../variant-search';
+import { ProductValue } from '../variant-search/product-search-input';
+import CartItemTableDelete from './cart-item-table-delete/cart-item-table-delete';
+import { useIsAuthorized } from '@commercetools-frontend/permissions';
+import { PERMISSIONS } from '../../constants';
 
 type Props = { cart: TCart };
 
 const CartDetailsItems: FC<Props> = ({ cart }) => {
   const showNotification = useShowNotification();
+  const showApiErrorNotification = useShowApiErrorNotification();
   const intl = useIntl();
   const cartUpdater = useCartUpdater();
   const [isCondensed, setIsCondensed] = useState<boolean>(true);
@@ -53,6 +63,9 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
   const { dataLocale } = useApplicationContext((context) => ({
     dataLocale: context.dataLocale ?? '',
   }));
+  const canManage = useIsAuthorized({
+    demandedPermissions: [PERMISSIONS.Manage],
+  });
 
   const handleChangeQuantity = async ({
     quantity,
@@ -71,6 +84,26 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
           },
         }
       : { changeLineItemQuantity: { lineItemId: id, quantity } };
+    await cartUpdater.execute({
+      updateActions: [action],
+      id: cart.id,
+      version: cart.version,
+      locale: dataLocale,
+    });
+    showNotification({
+      kind: 'success',
+      domain: DOMAINS.SIDE,
+      text: intl.formatMessage(messages.cartUpdated),
+    });
+  };
+
+  const handleRemoveLineItem = async (
+    id: string,
+    isCustomLineItem: boolean
+  ) => {
+    const action: TCartUpdateAction = isCustomLineItem
+      ? { removeCustomLineItem: { customLineItemId: id } }
+      : { removeLineItem: { lineItemId: id } };
     await cartUpdater.execute({
       updateActions: [action],
       id: cart.id,
@@ -141,6 +174,19 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
           />
         );
       }
+      case 'actions':
+        return (
+          <CartItemTableDelete
+            handleRemoveLineItem={async () =>
+              await handleRemoveLineItem(
+                lineItem.id,
+                isCustomLineItem(lineItem)
+              )
+            }
+            isDisabled={!canManage}
+            size={'medium'}
+          />
+        );
       case 'price':
         // unit price, only visible when tax is NOT included in price
         return <CartItemTableUnitPriceCell lineItem={lineItem} />;
@@ -230,8 +276,55 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
     }
   };
 
+  const handleAddVariantToCart = async (variant: ProductValue) => {
+    await cartUpdater
+      .execute({
+        updateActions: [{ addLineItem: { sku: variant.sku, quantity: 1 } }],
+        id: cart.id,
+        version: cart.version,
+        locale: dataLocale,
+      })
+      .then((result) => {
+        if (!result) {
+          return;
+        }
+        showNotification({
+          kind: 'success',
+          domain: DOMAINS.SIDE,
+          text: intl.formatMessage(messages.addVariantSuccess, {
+            sku: variant.sku,
+          }),
+        });
+      })
+      .catch((e) => {
+        const transformedErrors = transformErrors(e);
+        if (transformedErrors.unmappedErrors.length > 0) {
+          showApiErrorNotification({
+            errors: transformedErrors.unmappedErrors,
+          });
+        }
+      });
+  };
+
   return (
     <>
+      <Spacings.Stack scale="l">
+        <Constraints.Horizontal max={11}>
+          <Spacings.Stack scale="m">
+            <Text.Subheadline as="h5" intlMessage={messages.addSubTitle} />
+          </Spacings.Stack>
+        </Constraints.Horizontal>
+
+        <Constraints.Horizontal max={13}>
+          <ProductSearchInput
+            name={'variantSearch'}
+            onChange={async (event) => {
+              const product = event.target.value as ProductValue;
+              await handleAddVariantToCart(product);
+            }}
+          />
+        </Constraints.Horizontal>
+      </Spacings.Stack>
       <DataTableManager
         columns={tableData.visibleColumns}
         columnManager={columnManager}

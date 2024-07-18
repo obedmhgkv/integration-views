@@ -122,4 +122,19 @@ export default defineMessages({
       'Label for the confirmation message when line item added to the cart',
     defaultMessage: 'The cart has been successfully updated',
   },
+  add: {
+    id: 'Orders.Create.Step.LineItems.title',
+    description: 'Title',
+    defaultMessage: 'Add Item',
+  },
+  addSubTitle: {
+    id: 'Orders.Create.Step.LineItems.subTitle',
+    description: 'A subtitle for the line items step',
+    defaultMessage: 'Add items to your shopping cart.',
+  },
+  addVariantSuccess: {
+    id: 'Orders.Create.Step.LineItems.search.addVariantSuccess',
+    description: 'Message when the variant has been added to the cart',
+    defaultMessage: 'Variant {sku} has been added successfully to the cart',
+  },
 });

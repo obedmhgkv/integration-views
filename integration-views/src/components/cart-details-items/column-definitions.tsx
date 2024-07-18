@@ -83,6 +83,11 @@ const createSelectedColumnsDefinition = memoize(
           currencySymbol,
         }),
         align: 'right',
+      },
+      {
+        key: 'actions',
+        label: '',
+        align: 'center',
       }
     );
     return result;

@@ -26,8 +26,6 @@ import {
 } from '@commercetools-frontend/l10n';
 import { DOMAINS, NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
-import IconButton from '@commercetools-uikit/icon-button';
-import { BinFilledIcon } from '@commercetools-uikit/icons';
 import {
   showApiErrorNotification,
   useShowNotification,
@@ -39,6 +37,7 @@ import { ProductValue } from '../variant-search/product-search-input';
 import { ProductSearchInput } from '../variant-search';
 import ImageContainer from '../image-container';
 import QuantitySelector from '../quantity-selector';
+import CartItemTableDelete from '../cart-details-items/cart-item-table-delete/cart-item-table-delete';
 
 type Props = {
   onClose: () => void;
@@ -194,14 +193,12 @@ export const CustomerShoppingList: FC<Props> = ({ onClose }) => {
       }
       case 'actions':
         return (
-          <IconButton
-            icon={<BinFilledIcon />}
-            label={'Delete'}
-            onClick={async () => {
-              await handleRemoveLineItem(item.id);
-            }}
-            size="medium"
+          <CartItemTableDelete
+            handleRemoveLineItem={async () =>
+              await handleRemoveLineItem(item.id)
+            }
             isDisabled={!canManage}
+            size={'medium'}
           />
         );
       case 'quantity':

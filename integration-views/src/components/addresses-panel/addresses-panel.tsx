@@ -25,7 +25,7 @@ import Constraints from '@commercetools-uikit/constraints';
 import Text from '@commercetools-uikit/text';
 import FlatButton from '@commercetools-uikit/flat-button';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
-import { TCart, TShipping } from '../../types/generated/ctp';
+import { TCart } from '../../types/generated/ctp';
 import { FC } from 'react';
 
 export const ADDRESS_TYPE = {
@@ -47,57 +47,6 @@ const AddressesPanel: FC<Props> = ({ cart }) => {
   }));
   const { formatMessage } = useIntl();
 
-  const renderCustomerLink = () => (
-    <Tooltip
-      placement="left"
-      title={formatMessage(
-        cart.customerId ? messages.goToCustomer : messages.noCustomer
-      )}
-    >
-      <IconButton
-        icon={<UserLinearIcon />}
-        id="addresses-panel-customer-link"
-        isDisabled={!cart.customerId}
-        label={formatMessage(messages.goToCustomer)}
-        onClick={() => push(`/${projectKey}/customers/${cart.customerId}`)}
-      />
-    </Tooltip>
-  );
-
-  const getShippingAndDeliveryTabLink = (msg: string) => (
-    <Link to={'/orders'}>{msg}</Link>
-  );
-
-  const getNewLine = () => <br />;
-
-  const getMultipleShippingView = (shipping: Array<TShipping>) =>
-    shipping.length > 1 ? (
-      <Spacings.Inline alignItems="flex-start" scale="xs">
-        <div className={styles['icon-container']}>
-          <InfoIcon color="info" size="medium" />
-        </div>
-        <Text.Body
-          intlMessage={{
-            ...messages.multipleShippingMethodsHint,
-            values: {
-              shippingAndDeliveryTabLink: getShippingAndDeliveryTabLink,
-              newLine: getNewLine,
-            },
-          }}
-        />
-      </Spacings.Inline>
-    ) : (
-      <AddressContainer>
-        <Address
-          address={shipping?.[0]?.shippingAddress}
-          data-testid="shipping-address"
-          labelMissing={
-            <FormattedMessage {...messages.labelMissingShippingAddress} />
-          }
-        />
-      </AddressContainer>
-    );
-
   return (
     <CollapsiblePanel
       data-testid="addresses-panel"
@@ -106,7 +55,22 @@ const AddressesPanel: FC<Props> = ({ cart }) => {
           <FormattedMessage {...messages.panelTitle} />
         </CollapsiblePanel.Header>
       }
-      headerControls={renderCustomerLink()}
+      headerControls={
+        <Tooltip
+          placement="left"
+          title={formatMessage(
+            cart.customerId ? messages.goToCustomer : messages.noCustomer
+          )}
+        >
+          <IconButton
+            icon={<UserLinearIcon />}
+            id="addresses-panel-customer-link"
+            isDisabled={!cart.customerId}
+            label={formatMessage(messages.goToCustomer)}
+            onClick={() => push(`/${projectKey}/customers/${cart.customerId}`)}
+          />
+        </Tooltip>
+      }
     >
       <Constraints.Horizontal>
         <Grid
@@ -162,7 +126,36 @@ const AddressesPanel: FC<Props> = ({ cart }) => {
                   />
                 </Spacings.Inline>
                 {cart.shippingMode === SHIPPING_MODES.MULTIPLE ? (
-                  getMultipleShippingView(cart.shipping)
+                  cart.shipping.length > 1 ? (
+                    <Spacings.Inline alignItems="flex-start" scale="xs">
+                      <div className={styles['icon-container']}>
+                        <InfoIcon color="info" size="medium" />
+                      </div>
+                      <Text.Body
+                        intlMessage={{
+                          ...messages.multipleShippingMethodsHint,
+                          values: {
+                            shippingAndDeliveryTabLink: (msg: string) => (
+                              <Link to={'/orders'}>{msg}</Link>
+                            ),
+                            newLine: <br />,
+                          },
+                        }}
+                      />
+                    </Spacings.Inline>
+                  ) : (
+                    <AddressContainer>
+                      <Address
+                        address={cart.shipping?.[0]?.shippingAddress}
+                        data-testid="shipping-address"
+                        labelMissing={
+                          <FormattedMessage
+                            {...messages.labelMissingShippingAddress}
+                          />
+                        }
+                      />
+                    </AddressContainer>
+                  )
                 ) : (
                   <AddressContainer>
                     <Address
