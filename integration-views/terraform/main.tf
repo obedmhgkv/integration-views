@@ -41,5 +41,9 @@ resource "vercel_project" "mc-integration-views" {
     key = "CLOUD_IDENTIFIER"
     target = ["production", "preview", "development"]
     value = local.envs["CLOUD_IDENTIFIER"]
+  }, {
+    key = "GOOGLE_MAP_KEY"
+    target = ["production", "preview", "development"]
+    value = local.envs["GOOGLE_MAP_KEY"]
   }]
 }

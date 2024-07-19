@@ -2,6 +2,7 @@ node_modules
 coverage
 .terraform
 *.tfvars
+*.tfstate
 
 !.env
 .env.local

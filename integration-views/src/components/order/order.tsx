@@ -32,10 +32,23 @@ import PrimaryButton from '@commercetools-uikit/primary-button';
 import { ComponentProps } from '../../routes';
 
 const Order: FC<ComponentProps> = ({ id }) => {
-  const { dataLocale, projectLanguages } = useCustomViewContext((context) => ({
-    dataLocale: context.dataLocale,
-    projectLanguages: context.project?.languages,
-  }));
+  const { dataLocale, projectLanguages, googleMapOrigin, googleMapKey } =
+    useCustomViewContext((context) => {
+      const googleMapKey =
+        'googleMapKey' in context.environment
+          ? context.environment.googleMapKey
+          : undefined;
+      const googleMapOrigin =
+        'googleMapOrigin' in context.environment
+          ? context.environment.googleMapOrigin
+          : undefined;
+      return {
+        dataLocale: context.dataLocale,
+        projectLanguages: context.project?.languages,
+        googleMapKey: googleMapKey,
+        googleMapOrigin: googleMapOrigin,
+      };
+    });
   const createStepsDefinition = useMemo(
     () => [
       {
@@ -260,7 +273,7 @@ const Order: FC<ComponentProps> = ({ id }) => {
                   frameBorder={0}
                   style={{ border: 0 }}
                   referrerPolicy={'no-referrer-when-downgrade'}
-                  src={`https://www.google.com/maps/embed/v1/directions?key=AIzaSyD3yR1YtpvLtPDEjLZFWfTC-algjnZc-eU&origin=Adams-Lehmann-Straße+44,+80797+München&destination=${to}`}
+                  src={`https://www.google.com/maps/embed/v1/directions?key=${googleMapKey}&origin=${googleMapOrigin}&destination=${to}`}
                 />
               </Grid.Item>
             )}
