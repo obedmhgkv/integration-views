@@ -3,7 +3,7 @@
  */
 const config = {
   name: 'Integration Views',
-  description: 'Rendering additonal data, some static, some dynamic.',
+  description: 'Rendering additional data, some static, some dynamic.',
   cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
     development: {
