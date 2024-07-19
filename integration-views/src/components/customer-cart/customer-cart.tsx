@@ -149,16 +149,14 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
       <PageContentWide>
         <Spacings.Stack scale="xl">
           <CartDetailsGeneralInfoHeader cart={cart} />
-          {(cart.lineItems.length >= 1 || cart.customLineItems.length >= 1) && (
-            <Spacings.Stack scale="xl">
-              <CartDetailsItems cart={cart} />
-              <CartAppliedDiscountsPanel
-                cart={cart}
-                onApplyDiscountCode={handleApplyDiscountCode}
-                onRemoveDiscountCode={handleRemoveDiscountCode}
-              />
-            </Spacings.Stack>
-          )}
+          <Spacings.Stack scale="xl">
+            <CartDetailsItems cart={cart} />
+            <CartAppliedDiscountsPanel
+              cart={cart}
+              onApplyDiscountCode={handleApplyDiscountCode}
+              onRemoveDiscountCode={handleRemoveDiscountCode}
+            />
+          </Spacings.Stack>
           {(cart.lineItems.length >= 1 || cart.customLineItems.length >= 1) && (
             <Card type="raised">
               <CartSummaryPricingBreakdown cart={cart} />

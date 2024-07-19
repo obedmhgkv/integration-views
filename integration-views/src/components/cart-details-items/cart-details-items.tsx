@@ -320,45 +320,47 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
           />
         </Constraints.Horizontal>
       </Spacings.Stack>
-      <DataTableManager
-        columns={tableData.visibleColumns}
-        columnManager={columnManager}
-        onSettingsChange={onSettingChange}
-        displaySettings={{
-          isWrappingText,
-          isCondensed,
-          disableDisplaySettings: false,
-        }}
-      >
-        <DataTable
-          isCondensed
+      {(cart.lineItems.length >= 1 || cart.customLineItems.length >= 1) && (
+        <DataTableManager
           columns={tableData.visibleColumns}
-          rows={cart.lineItems}
-          itemRenderer={itemRenderer}
-          footer={
-            <Spacings.Stack
-              alignItems="flexEnd"
-              data-testid="order-totals-last-row"
-            >
-              <Text.Body isBold>
-                <Spacings.Inline>
-                  <span>
-                    <FormattedMessage {...messages.totalLabel} />
-                  </span>
-                  <span>
-                    {formatMoney(
-                      cart.shippingMode === SHIPPING_MODES.MULTIPLE
-                        ? getGrossPriceWithoutShippingMulti(cart)
-                        : getGrossPriceWithoutShipping(cart),
-                      intl
-                    )}
-                  </span>
-                </Spacings.Inline>
-              </Text.Body>
-            </Spacings.Stack>
-          }
-        />
-      </DataTableManager>
+          columnManager={columnManager}
+          onSettingsChange={onSettingChange}
+          displaySettings={{
+            isWrappingText,
+            isCondensed,
+            disableDisplaySettings: false,
+          }}
+        >
+          <DataTable
+            isCondensed
+            columns={tableData.visibleColumns}
+            rows={cart.lineItems}
+            itemRenderer={itemRenderer}
+            footer={
+              <Spacings.Stack
+                alignItems="flexEnd"
+                data-testid="order-totals-last-row"
+              >
+                <Text.Body isBold>
+                  <Spacings.Inline>
+                    <span>
+                      <FormattedMessage {...messages.totalLabel} />
+                    </span>
+                    <span>
+                      {formatMoney(
+                        cart.shippingMode === SHIPPING_MODES.MULTIPLE
+                          ? getGrossPriceWithoutShippingMulti(cart)
+                          : getGrossPriceWithoutShipping(cart),
+                        intl
+                      )}
+                    </span>
+                  </Spacings.Inline>
+                </Text.Body>
+              </Spacings.Stack>
+            }
+          />
+        </DataTableManager>
+      )}
     </>
   );
 };
