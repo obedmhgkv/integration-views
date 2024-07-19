@@ -124,24 +124,19 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
     data
   );
 
+  const columnsDefinition = createSelectedColumnsDefinition(
+    intl,
+    currencySymbol,
+    {
+      isTaxIncludedInPrice: determineIfTaxIncludedInPrice(cart),
+      inventoryMode: cart.inventoryMode,
+      isTaxRateSameInMultiMode: determinteIfTaxRateSameInMultiMode(cart),
+    }
+  );
   const [tableData, setTableData] = useState({
-    columns: [
-      ...createSelectedColumnsDefinition({
-        intl: intl,
-        currencySymbol: currencySymbol,
-        isTaxIncludedInPrice: determineIfTaxIncludedInPrice(cart),
-        inventoryMode: cart.inventoryMode,
-        isTaxRateSameInMultiMode: determinteIfTaxRateSameInMultiMode(cart),
-      }),
-    ],
-    visibleColumns: createSelectedColumnsDefinition({
-      intl: intl,
-      inventoryMode: cart.inventoryMode,
-    }),
-    visibleColumnKeys: createSelectedColumnsDefinition({
-      intl: intl,
-      inventoryMode: cart.inventoryMode,
-    }).map((column) => column.key),
+    columns: [...columnsDefinition],
+    visibleColumns: columnsDefinition,
+    visibleColumnKeys: columnsDefinition.map((column) => column.key),
   });
 
   const getUrlToLineItemDetails = (lineItem: TLineItem | TCustomLineItem) => {

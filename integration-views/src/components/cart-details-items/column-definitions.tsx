@@ -1,17 +1,15 @@
 import memoize from 'memoize-one';
 import messages from './messages';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, IntlShape } from 'react-intl';
 import { TColumn } from '@commercetools-uikit/data-table';
 import { INVENTORY_MODES } from '../../constants';
 
 const createSelectedColumnsDefinition = memoize(
-  ({
-    intl,
-    currencySymbol,
-    isTaxIncludedInPrice,
-    inventoryMode,
-    isTaxRateSameInMultiMode,
-  }): Array<TColumn> => {
+  (
+    intl: IntlShape,
+    currencySymbol = '€',
+    { isTaxIncludedInPrice, inventoryMode, isTaxRateSameInMultiMode }
+  ): Array<TColumn> => {
     const result: Array<TColumn> = [
       {
         key: 'name',
@@ -33,17 +31,16 @@ const createSelectedColumnsDefinition = memoize(
         align: 'right',
       });
     }
-    // if (isTaxIncludedInPrice && isTaxRateSameInMultiMode) {
-    //   result.push({
-    //     key: 'grossPrice',
-    //     label: intl?.formatMessage(messages.columnGrossUnitPrice, {
-    //       currencySymbol,
-    //     }),
-    //     align: 'right',
-    //   });
-    // }
-
-    if (isTaxIncludedInPrice === false) {
+    if (isTaxIncludedInPrice && isTaxRateSameInMultiMode) {
+      result.push({
+        key: 'netPrice',
+        label: intl?.formatMessage(messages.columnNetUnitPrice, {
+          currencySymbol,
+        }),
+        align: 'right',
+      });
+    }
+    if (!isTaxIncludedInPrice) {
       result.push({
         key: 'price',
         label: intl?.formatMessage(messages.columnNetUnitPrice, {
@@ -57,10 +54,10 @@ const createSelectedColumnsDefinition = memoize(
       label: intl?.formatMessage(messages.columnQuantity),
       align: 'right',
     });
-    result.push({
-      key: 'state',
-      label: intl?.formatMessage(messages.columnState),
-    });
+    // result.push({
+    //   key: 'state',
+    //   label: intl?.formatMessage(messages.columnState),
+    // });
 
     if (isTaxRateSameInMultiMode) {
       result.push({
@@ -86,7 +83,7 @@ const createSelectedColumnsDefinition = memoize(
       },
       {
         key: 'actions',
-        label: '',
+        label: 'Actions',
         align: 'center',
       }
     );
