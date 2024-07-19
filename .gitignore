@@ -3,6 +3,7 @@ coverage
 .terraform
 *.tfvars
 *.tfstate
+*.tfstate.backup
 
 !.env
 .env.local
