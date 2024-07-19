@@ -1,5 +1,8 @@
 import NoImageIconUri from '@commercetools-frontend/assets/images/no-image.svg';
-import { formatLocalizedString } from '@commercetools-frontend/l10n';
+import {
+  formatLocalizedString,
+  transformLocalizedFieldToLocalizedString,
+} from '@commercetools-frontend/l10n';
 
 import messages from './messages';
 import { TCustomLineItem, TLineItem } from '../../../types/generated/ctp';
@@ -31,12 +34,19 @@ export const CartItemTableProductCell: FC<Props> = (props) => {
     dataLocale: context.dataLocale ?? '',
     projectLanguages: context.project?.languages ?? [],
   }));
-  const lineItemName = formatLocalizedString(props.lineItem, {
-    key: 'name',
-    locale: dataLocale,
-    fallback: props.lineItem.id,
-    fallbackOrder: projectLanguages,
-  });
+  const lineItemName = formatLocalizedString(
+    {
+      name: transformLocalizedFieldToLocalizedString(
+        props.lineItem.nameAllLocales ?? []
+      ),
+    },
+    {
+      key: 'name',
+      locale: dataLocale,
+      fallback: props.lineItem.id,
+      fallbackOrder: projectLanguages,
+    }
+  );
 
   return (
     <Spacings.Inline alignItems="center">
