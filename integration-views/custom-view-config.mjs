@@ -3,6 +3,7 @@
  */
 const config = {
   name: 'Integration Views',
+  description: 'Rendering additonal data, some static, some dynamic.',
   cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
     development: {
@@ -33,7 +34,8 @@ const config = {
   typeSettings: {
     size: 'LARGE',
   },
-  locators: ['products.product_details.general'],
+  locators: ['customers.customer_details.general', 'orders.order_details.general'],
+  labelAllLocales: [{locale: 'en', value:'Integration Views'}]
 };
 
 export default config;
