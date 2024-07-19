@@ -30,3 +30,12 @@ development: {
 ```
 Set the `initialProjectKey` to your project key.
 The `hostUriPath` is your context URL. Read more [here](https://docs.commercetools.com/merchant-center-customizations/api-reference/custom-view-config#envdevelopmenthosturipath)
+
+## Screenshots
+![customer dashboard](./docs/customer-dashboard.png)
+![customer carts list](./docs/customer-carts-list.png)
+![customer cart](./docs/customer-cart.png)
+![customer shopping lists](./docs/customer-shopping-lists.png)
+![customer shopping list](./docs/customer-shopping-list.png)
+![customer shopping list add](./docs/customer-shopping-list-add.png)
+![order dashboard](./docs/order-dashboard.png)
