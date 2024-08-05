@@ -44,7 +44,7 @@ const config = {
   labelAllLocales: [{ locale: 'en', value: 'Integration Views' }],
   additionalEnv: {
     googleMapKey: '${env:GOOGLE_MAP_KEY}',
-    googleMapOrigin: 'Adams-Lehmann-Straße+44,+80797+München',
+    googleMapOrigin: '${env:GOOGLE_MAP_ORIGIN}',
   },
 };
 
