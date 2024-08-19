@@ -5,12 +5,13 @@ const config = {
   name: 'Integration Views',
   description: 'Rendering additional data, some static, some dynamic.',
   cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
+
   env: {
     development: {
       initialProjectKey: 'tech-sales-good-store',
-      hostUriPath: '/tech-sales-good-store/orders/5838b628-38d2-47c1-8576-a1faefa1c21f/general'
-      // hostUriPath:
-      //   '/tech-sales-good-store/customers/f52e4230-a1f9-4f49-b6eb-af33fba3ddad/general',
+      //hostUriPath: '/tech-sales-good-store/orders/5838b628-38d2-47c1-8576-a1faefa1c21f/general'
+      hostUriPath:
+        '/tech-sales-good-store/customers/f52e4230-a1f9-4f49-b6eb-af33fba3ddad/general',
     },
     production: {
       customViewId: '${env:CUSTOM_VIEW_ID}',
@@ -19,7 +20,7 @@ const config = {
   },
   headers: {
     csp: {
-      'connect-src': ['https://www.google.com/'],
+      'connect-src': ['https://www.google.com/', 'https://api.trello.com'],
       'frame-src': ['https://www.google.com/'],
     },
   },
