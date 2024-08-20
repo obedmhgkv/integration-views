@@ -50,7 +50,6 @@ const Claims: FC<Props> = () => {
 
   return (
     <Spacings.Stack scale="xl">
-      <pre>{JSON.stringify(customerId, null, 4)}</pre>
       {selectedClaim ? (
         <SlideStack selectedClaim={selectedClaim} onBack={onBack} />
       ) : (
