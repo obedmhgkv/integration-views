@@ -15,7 +15,10 @@ const useClaims = (): any => {
         data.map(async (claim: any) => await ClaimMapper.mapClaim(claim))
       );
 
-      return mappedClaimData;
+      const filteredClaimData = mappedClaimData.filter(
+        (claim: any) => claim.accountId === customerId
+      );
+      return filteredClaimData;
     } catch (error) {
       console.log(error);
       throw error;

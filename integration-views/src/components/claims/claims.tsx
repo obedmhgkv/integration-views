@@ -2,7 +2,7 @@ import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 
 import useClaims from '../../hooks/useClaims';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import DataTableManager from '@commercetools-uikit/data-table-manager';
 import DataTable from '@commercetools-uikit/data-table';
 
@@ -17,11 +17,14 @@ interface Claim {
   due: string;
   customFields: any[];
 }
-const Claims = () => {
+
+type Props = { id: string };
+
+const Claims: FC<Props> = ({ id }) => {
   const hostUrl = useCustomViewContext((context) => context.hostUrl);
   const url = new URL(hostUrl);
 
-  const customerId = 'customer-1234id-1234';
+  const customerId = id;
   const { getClaims } = useClaims();
 
   const [claims, setClaims] = useState<Claim[]>([]);
@@ -33,7 +36,6 @@ const Claims = () => {
   useEffect(() => {
     const fetchClaims = async () => {
       const response = await getClaims(customerId);
-      console.log('response', response);
       setClaims(response);
     };
     fetchClaims();
