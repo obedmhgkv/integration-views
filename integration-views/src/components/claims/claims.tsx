@@ -18,13 +18,12 @@ interface Claim {
   customFields: any[];
 }
 
-type Props = { id: string };
+type Props = { id?: string };
 
-const Claims: FC<Props> = ({ id }) => {
+const Claims: FC<Props> = () => {
   const hostUrl = useCustomViewContext((context) => context.hostUrl);
-  const url = new URL(hostUrl);
 
-  const customerId = id;
+  const customerId = hostUrl.match(/\/customers\/([^/]+)\/general/)?.[1];
   const { getClaims } = useClaims();
 
   const [claims, setClaims] = useState<Claim[]>([]);
@@ -51,6 +50,7 @@ const Claims: FC<Props> = ({ id }) => {
 
   return (
     <Spacings.Stack scale="xl">
+      <pre>{JSON.stringify(customerId, null, 4)}</pre>
       {selectedClaim ? (
         <SlideStack selectedClaim={selectedClaim} onBack={onBack} />
       ) : (
