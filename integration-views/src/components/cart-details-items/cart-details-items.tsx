@@ -49,6 +49,7 @@ import { ProductValue } from '../variant-search/product-search-input';
 import CartItemTableDelete from './cart-item-table-delete/cart-item-table-delete';
 import { useIsAuthorized } from '@commercetools-frontend/permissions';
 import { PERMISSIONS } from '../../constants';
+import { TDataTableManagerProps } from '@commercetools-uikit/data-table-manager/dist/declarations/src/types';
 
 type Props = { cart: TCart };
 
@@ -239,7 +240,10 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
     visibleColumnKeys: tableData.visibleColumnKeys,
   };
 
-  const onSettingChange = (action: string, nextValue: boolean | string[]) => {
+  const onSettingChange: TDataTableManagerProps['onSettingsChange'] = (
+    action,
+    nextValue
+  ) => {
     const {
       COLUMNS_UPDATE,
       IS_TABLE_CONDENSED_UPDATE,

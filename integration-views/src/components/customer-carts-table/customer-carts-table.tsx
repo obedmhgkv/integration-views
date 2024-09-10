@@ -22,6 +22,7 @@ import { TPaginationState } from '@commercetools-uikit/hooks/dist/declarations/s
 import Spacings from '@commercetools-uikit/spacings';
 import SelectField from '@commercetools-uikit/select-field';
 import CustomerCartsUpdate from '../customer-carts-update/customer-carts-update';
+import { TDataTableManagerProps } from '@commercetools-uikit/data-table-manager/dist/declarations/src/types';
 
 type Props = {
   items: Array<TCart>;
@@ -119,7 +120,10 @@ export const CustomerCartsTable: FC<Props> = ({
     hideableColumns: tableData.columns,
     visibleColumnKeys: tableData.visibleColumnKeys,
   };
-  const onSettingChange = (action: string, nextValue: boolean | string[]) => {
+  const onSettingChange: TDataTableManagerProps['onSettingsChange'] = (
+    action,
+    nextValue
+  ) => {
     const {
       COLUMNS_UPDATE,
       IS_TABLE_CONDENSED_UPDATE,
