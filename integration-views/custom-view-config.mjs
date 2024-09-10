@@ -31,7 +31,7 @@ const config = {
       'view_shopping_lists',
       'view_products',
     ],
-    manage: ['manage_orders', 'manage_shopping_lists'],
+    manage: ['manage_orders', 'manage_shopping_lists', 'manage_customers'],
   },
   type: 'CustomPanel',
   typeSettings: {

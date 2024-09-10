@@ -1,0 +1,5 @@
+mutation CreateEmailVerificationToken($id: String!) {
+    customerCreateEmailVerificationToken(id: $id, ttlMinutes: 100) {
+        value
+    }
+}

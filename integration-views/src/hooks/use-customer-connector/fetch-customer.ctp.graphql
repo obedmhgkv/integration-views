@@ -1,5 +1,6 @@
 query FetchCustomer($id: String) {
     customer(id: $id) {
         email
+        isEmailVerified
     }
 }

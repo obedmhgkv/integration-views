@@ -19,7 +19,7 @@ import { useCustomerFetcher } from '../../hooks/use-customer-connector/use-custo
 import { Route, Switch, useRouteMatch } from 'react-router';
 import CustomerDashboard from '../customer-dashboard/customer-dashboard';
 import CustomerCarts from '../customer-carts/customer-carts';
-import CustomerShoppingLists from '../customer-shopping-lists/customer-shopping-lists';
+import CustomerActions from '../customer-shopping-lists/customer-actions';
 
 const Customer: FC<ComponentProps> = ({ id }) => {
   const match = useRouteMatch();
@@ -70,6 +70,10 @@ const Customer: FC<ComponentProps> = ({ id }) => {
           />
           <TabHeader to={`${match.url}/carts`} label="Carts" />
           <TabHeader to={`${match.url}/shopping-lists`} label="Shopping List" />
+          {(customer?.isEmailVerified === undefined ||
+            customer?.isEmailVerified === false) && (
+            <TabHeader to={`${match.url}/actions`} label="Customer Actions" />
+          )}
         </>
       }
     >
@@ -81,7 +85,10 @@ const Customer: FC<ComponentProps> = ({ id }) => {
           <CustomerCarts id={id} />
         </Route>
         <Route path={`${match.path}/shopping-lists`}>
-          <CustomerShoppingLists id={id} />
+          <CustomerActions id={id} />
+        </Route>
+        <Route path={`${match.path}/actions`}>
+          <CustomerActions id={id} />
         </Route>
       </Switch>
     </TabularMainPage>
