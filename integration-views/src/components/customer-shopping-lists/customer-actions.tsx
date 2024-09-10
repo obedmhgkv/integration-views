@@ -11,6 +11,8 @@ import {
   useCustomerFetcher,
 } from '../../hooks/use-customer-connector/use-customers-connector';
 import PrimaryButton from '@commercetools-uikit/primary-button';
+import { DOMAINS } from '@commercetools-frontend/constants';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
 
 type Props = { id: string };
 
@@ -18,6 +20,7 @@ export const CustomerActions: FC<Props> = ({ id }) => {
   const { customer, loading, error } = useCustomerFetcher({
     id: id,
   });
+  const showNotification = useShowNotification();
 
   const [updateState, setUpdateState] = useState('');
 
@@ -49,7 +52,15 @@ export const CustomerActions: FC<Props> = ({ id }) => {
         const token = data?.customerCreateEmailVerificationToken?.value;
         if (token) {
           customerConfirmEmail({ tokenValue: token })
-            .then(() => setUpdateState('Customer verified'))
+            .then(() => {
+              setUpdateState('Customer verified');
+              showNotification({
+                kind: 'success',
+                domain: DOMAINS.SIDE,
+                text: 'Customer is now verified',
+              });
+            })
+
             .catch((error) => {
               setUpdateState(error);
             });
