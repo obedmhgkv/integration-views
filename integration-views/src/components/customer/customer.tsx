@@ -20,6 +20,7 @@ import { Route, Switch, useRouteMatch } from 'react-router';
 import CustomerDashboard from '../customer-dashboard/customer-dashboard';
 import CustomerCarts from '../customer-carts/customer-carts';
 import CustomerActions from '../customer-shopping-lists/customer-actions';
+import CustomerShoppingLists from '../customer-actions/customer-shopping-lists';
 
 const Customer: FC<ComponentProps> = ({ id }) => {
   const match = useRouteMatch();
@@ -85,7 +86,7 @@ const Customer: FC<ComponentProps> = ({ id }) => {
           <CustomerCarts id={id} />
         </Route>
         <Route path={`${match.path}/shopping-lists`}>
-          <CustomerActions id={id} />
+          <CustomerShoppingLists id={id} />
         </Route>
         <Route path={`${match.path}/actions`}>
           <CustomerActions id={id} />
