@@ -19,8 +19,8 @@ import { useCustomerFetcher } from '../../hooks/use-customer-connector/use-custo
 import { Route, Switch, useRouteMatch } from 'react-router';
 import CustomerDashboard from '../customer-dashboard/customer-dashboard';
 import CustomerCarts from '../customer-carts/customer-carts';
-import CustomerActions from '../customer-shopping-lists/customer-actions';
-import CustomerShoppingLists from '../customer-actions/customer-shopping-lists';
+import CustomerActions from '../customer-actions/customer-actions';
+import CustomerShoppingLists from '../customer-shopping-lists/customer-shopping-lists';
 
 const Customer: FC<ComponentProps> = ({ id }) => {
   const match = useRouteMatch();
