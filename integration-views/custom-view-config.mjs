@@ -20,6 +20,7 @@ const config = {
   },
   headers: {
     csp: {
+      'script-src': ['*.fullstory.com/'],
       'connect-src': ['https://www.google.com/', 'https://api.trello.com'],
       'frame-src': ['https://www.google.com/'],
     },
