@@ -118,5 +118,6 @@
     "@types/react-router": "<6",
     "@types/react-router-dom": "<6"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "packageManager": "yarn@1.22.22"
 }
