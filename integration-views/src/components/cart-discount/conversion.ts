@@ -1,11 +1,16 @@
 import {
   TAbsoluteDiscountValue,
+  TCartDiscountTargetInput,
   TCartDiscountValueInput,
   TDirectDiscount,
   TDirectDiscountDraft,
   TRelativeDiscountValue,
 } from '../../types/generated/ctp';
-import { DISCOUNT_SELECT_TYPES, FormikType } from './cart-discount';
+import {
+  DISCOUNT_SELECT_TYPES,
+  DISCOUNT_TARGET_TYPES,
+  FormikType,
+} from './cart-discount';
 import TextInput from '@commercetools-uikit/text-input';
 import omitEmpty from 'omit-empty-es';
 
@@ -44,14 +49,26 @@ export const fromDirectDiscountToDirectDiscountDraft = (
       };
     }
 
+    let cartDiscountTargetInput: TCartDiscountTargetInput | undefined =
+      undefined;
+    if (directDiscount.target?.type === DISCOUNT_TARGET_TYPES.SHIPPING) {
+      cartDiscountTargetInput = { shipping: { dummy: 'true' } };
+    } else if (
+      directDiscount.target?.type === DISCOUNT_TARGET_TYPES.TOTAL_PRICE
+    ) {
+      cartDiscountTargetInput = { totalPrice: { dummy: 'true' } };
+    }
+
     return {
-      target: { totalPrice: { dummy: 'true' } },
+      target: cartDiscountTargetInput,
       value: cartDiscountValueInput,
     };
   });
 };
 
-export const cartDiscountValueInputFromFormikValues = (values: FormikType) => {
+export const cartDiscountValueInputFromFormikValues = (
+  values: FormikType
+): TDirectDiscountDraft => {
   let cartDiscountValueInput: TCartDiscountValueInput = {};
   if (values.discountType === 'absolute') {
     cartDiscountValueInput = {
@@ -69,11 +86,20 @@ export const cartDiscountValueInputFromFormikValues = (values: FormikType) => {
   } else if (values.discountType === 'relative') {
     cartDiscountValueInput = {
       relative: {
-        permyriad: Number.parseInt(values.discountValueRelative, 10),
+        permyriad: Number.parseInt(values.discountValueRelative, 10) * 100,
       },
     };
   }
-  return cartDiscountValueInput;
+  let cartDiscountTargetInput: TCartDiscountTargetInput | undefined = undefined;
+  if (values.targetType === DISCOUNT_TARGET_TYPES.SHIPPING) {
+    cartDiscountTargetInput = { shipping: { dummy: 'true' } };
+  } else if (values.targetType === DISCOUNT_TARGET_TYPES.TOTAL_PRICE) {
+    cartDiscountTargetInput = { totalPrice: { dummy: 'true' } };
+  }
+  return {
+    target: cartDiscountTargetInput,
+    value: cartDiscountValueInput,
+  };
 };
 
 export const validate = (values: FormikType) => {

@@ -31,6 +31,11 @@ import {
 import Stamp from '@commercetools-uikit/stamp';
 import { TTone } from '@commercetools-uikit/stamp/dist/declarations/src/stamp';
 
+export const DISCOUNT_TARGET_TYPES = {
+  SHIPPING: 'shipping',
+  TOTAL_PRICE: 'totalPrice',
+};
+
 export const DISCOUNT_SELECT_TYPES = {
   RELATIVE: 'relative',
   ABSOLUTE: 'absolute',
@@ -56,6 +61,19 @@ const createDirectDiscountColumnsDefinition = memoize((intl) => [
   },
 ]);
 
+const getTargetTypeOptions = memoize((intl) => {
+  return [
+    {
+      label: intl.formatMessage(messages.cartDiscountOnShipping),
+      value: DISCOUNT_TARGET_TYPES.SHIPPING,
+    },
+    {
+      label: intl.formatMessage(messages.cartDiscountOnCartTotalPrice),
+      value: DISCOUNT_TARGET_TYPES.TOTAL_PRICE,
+    },
+  ];
+});
+
 const getOptions = memoize((intl) => {
   return [
     {
@@ -80,6 +98,7 @@ export type FormikType = {
   discountType: string;
   discountValueAbsolute: { amount: string; currencyCode: string };
   discountValueRelative: string;
+  targetType: string;
 };
 
 const CartDiscount: FC<Props> = ({ cart, onApplyDirectDiscount }) => {
@@ -97,17 +116,12 @@ const CartDiscount: FC<Props> = ({ cart, onApplyDirectDiscount }) => {
         amount: '',
       },
       discountValueRelative: '',
+      targetType: DISCOUNT_TARGET_TYPES.TOTAL_PRICE,
     },
     onSubmit: async (values) => {
-      let cartDiscountValueInput =
-        cartDiscountValueInputFromFormikValues(values);
-
       await onApplyDirectDiscount(
         fromDirectDiscountToDirectDiscountDraft(cart.directDiscounts).concat([
-          {
-            target: { totalPrice: { dummy: 'true' } },
-            value: cartDiscountValueInput,
-          },
+          cartDiscountValueInputFromFormikValues(values),
         ])
       ).then(() => formik.resetForm());
     },
@@ -132,9 +146,14 @@ const CartDiscount: FC<Props> = ({ cart, onApplyDirectDiscount }) => {
       case 'targetType':
         let targetTypeLabel = discountCode.target?.type;
         switch (discountCode.target?.type) {
-          case 'totalPrice':
+          case DISCOUNT_TARGET_TYPES.TOTAL_PRICE:
             targetTypeLabel = intl.formatMessage(
               messages.cartDiscountOnCartTotalPrice
+            );
+            break;
+          case DISCOUNT_TARGET_TYPES.SHIPPING:
+            targetTypeLabel = intl.formatMessage(
+              messages.cartDiscountOnShipping
             );
             break;
         }
@@ -143,11 +162,11 @@ const CartDiscount: FC<Props> = ({ cart, onApplyDirectDiscount }) => {
         let typeTone: TTone = 'primary';
         let typeLabel = discountCode.value?.type;
         switch (discountCode.value?.type) {
-          case 'relative':
+          case DISCOUNT_SELECT_TYPES.RELATIVE:
             typeTone = 'primary';
             typeLabel = intl.formatMessage(messages.relativeCartDiscountOption);
             break;
-          case 'absolute':
+          case DISCOUNT_SELECT_TYPES.ABSOLUTE:
             typeTone = 'secondary';
             typeLabel = intl.formatMessage(messages.absoluteCartDiscountOption);
             break;
@@ -163,7 +182,7 @@ const CartDiscount: FC<Props> = ({ cart, onApplyDirectDiscount }) => {
         switch (discountCode.value.type) {
           case 'relative': {
             const relative = discountCode.value as TRelativeDiscountValue;
-            return formatPercentage(relative.permyriad);
+            return formatPercentage(relative.permyriad / 100);
           }
           case 'absolute': {
             const absolute = discountCode.value as TAbsoluteDiscountValue;
@@ -194,11 +213,20 @@ const CartDiscount: FC<Props> = ({ cart, onApplyDirectDiscount }) => {
         <SelectField
           title={intl.formatMessage(messages.applyDiscountText)}
           isDisabled={!canManage}
+          name="targetType"
+          onChange={formik.handleChange}
+          options={getTargetTypeOptions(intl)}
+          value={formik.values.targetType}
+          horizontalConstraint={6}
+        />
+        <SelectField
+          title={''}
+          isDisabled={!canManage}
           name="discountType"
           onChange={formik.handleChange}
           options={getOptions(intl)}
           value={formik.values.discountType}
-          horizontalConstraint={7}
+          horizontalConstraint={6}
         />
         {formik.values.discountType === DISCOUNT_SELECT_TYPES.RELATIVE && (
           <NumberField

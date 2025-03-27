@@ -62,4 +62,8 @@ export default defineMessages({
     id: 'Orders.quotes.draft.discounts.cartDiscountOnCartTotalPrice',
     defaultMessage: 'Discount on Cart total price',
   },
+  cartDiscountOnShipping: {
+    id: 'Orders.quotes.draft.discounts.cartDiscountOnShipping',
+    defaultMessage: 'Discount on Shipping',
+  },
 });
