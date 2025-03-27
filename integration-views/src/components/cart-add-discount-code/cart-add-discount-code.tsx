@@ -10,7 +10,7 @@ import { TTextFieldProps } from '@commercetools-uikit/text-field/dist/declaratio
 
 interface Props {
   isDisabled?: boolean;
-  onApplyDiscountCode: (code: string) => Promise<boolean>;
+  onApplyDiscountCode: (code: string) => Promise<void>;
   resetErrors?: (...args: unknown[]) => unknown;
   error?: {
     code?: string;
@@ -33,12 +33,9 @@ const CartAddDiscountCode: FC<Props> = ({
   };
 
   const handleApplyDiscountCode = () => {
-    onApplyDiscountCode(codeValue).then(
-      // clear the field only if there are no errors returned from the server
-      (res) => {
-        if (res) setCodeValue('');
-      }
-    );
+    onApplyDiscountCode(codeValue).then(() => {
+      setCodeValue('');
+    });
   };
 
   const renderError = (key: string) =>

@@ -101,7 +101,6 @@ export const useCartDeleter = () => {
         },
       });
     } catch (graphQlResponse) {
-      console.log(graphQlResponse);
       throw extractErrorFromGraphQlResponse(graphQlResponse);
     }
   };
@@ -179,7 +178,6 @@ export const useCartUpdater = () => {
       }
       return Promise.resolve(undefined);
     } catch (graphQlResponse) {
-      console.log(graphQlResponse);
       throw extractErrorFromGraphQlResponse(graphQlResponse);
     }
   };

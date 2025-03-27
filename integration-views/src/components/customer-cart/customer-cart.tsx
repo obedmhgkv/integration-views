@@ -15,13 +15,10 @@ import {
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { ContentNotification } from '@commercetools-uikit/notifications';
 import Text from '@commercetools-uikit/text';
-import { getErrorMessage, transformErrors } from '../../helpers';
+import { getErrorMessage } from '../../helpers';
 import Spacings from '@commercetools-uikit/spacings';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
-import {
-  useShowApiErrorNotification,
-  useShowNotification,
-} from '@commercetools-frontend/actions-global';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
 import { DOMAINS } from '@commercetools-frontend/constants';
 import CartDetailsGeneralInfoHeader from '../cart-details-general-info-header';
 import Card from '@commercetools-uikit/card';
@@ -29,7 +26,11 @@ import CartDetailsItems from '../cart-details-items/cart-details-items';
 import CartSummaryPricingBreakdown from '../cart-summary-pricing-breakdown';
 import AddressesPanel from '../addresses-panel';
 import CartAppliedDiscountsPanel from '../cart-applied-discounts-panel';
-import { TCartUpdateAction } from '../../types/generated/ctp';
+import {
+  TCartUpdateAction,
+  TDirectDiscountDraft,
+} from '../../types/generated/ctp';
+import { graphQLErrorHandler } from '../../utils/error-handling';
 
 type Props = { onClose: () => Promise<void> };
 
@@ -41,8 +42,7 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
   }));
   const cartUpdater = useCartUpdater();
   const showNotification = useShowNotification();
-  const showApiErrorNotification = useShowApiErrorNotification();
-  const { cart, loading, error } = useCartFetcher({
+  const { cart, loading, error, refetch } = useCartFetcher({
     id: id,
     locale: dataLocale,
   });
@@ -91,29 +91,20 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
         version: cart.version,
         locale: dataLocale,
       })
-      .then(
-        () => {
+      .then(() => {
+        refetch().then(() => {
           showNotification({
             kind: 'success',
             domain: DOMAINS.SIDE,
             text: intl.formatMessage(messages.cartUpdated),
           });
-          return true;
-        },
-        (graphQLErrors) => {
-          const transformedErrors = transformErrors(graphQLErrors);
-          if (transformedErrors.unmappedErrors.length > 0) {
-            showApiErrorNotification({
-              errors: transformedErrors.unmappedErrors,
-            });
-          }
-          return false;
-        }
-      );
+        });
+      })
+      .catch(graphQLErrorHandler(showNotification));
   };
 
-  const handleRemoveDiscountCode = (id: string) => {
-    handleUpdateCart([
+  const handleRemoveDiscountCode = async (id: string) => {
+    await handleUpdateCart([
       {
         removeDiscountCode: {
           discountCode: {
@@ -125,12 +116,24 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
     ]);
   };
 
-  const handleApplyDiscountCode = (code: string) =>
-    handleUpdateCart([
+  const handleApplyDiscountCode = async (code: string) =>
+    await handleUpdateCart([
       {
         addDiscountCode: { code: code },
       },
     ]);
+
+  const handleApplyDirectDiscount = async (
+    directDiscounts: Array<TDirectDiscountDraft>
+  ) =>
+    await handleUpdateCart([
+      {
+        setDirectDiscounts: {
+          discounts: directDiscounts,
+        },
+      },
+    ]);
+
   return (
     <CustomFormModalPage
       title={intl.formatMessage(messages.title)}
@@ -151,10 +154,12 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
           <CartDetailsGeneralInfoHeader cart={cart} />
           <Spacings.Stack scale="xl">
             <CartDetailsItems cart={cart} />
+
             <CartAppliedDiscountsPanel
               cart={cart}
               onApplyDiscountCode={handleApplyDiscountCode}
               onRemoveDiscountCode={handleRemoveDiscountCode}
+              onApplyDirectDiscount={handleApplyDirectDiscount}
             />
           </Spacings.Stack>
           {(cart.lineItems.length >= 1 || cart.customLineItems.length >= 1) && (

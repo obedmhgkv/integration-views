@@ -180,7 +180,7 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
               )
             }
             isDisabled={!canManage}
-            size={'medium'}
+            size={'30'}
           />
         );
       case 'price':
