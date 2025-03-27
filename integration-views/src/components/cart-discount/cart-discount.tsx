@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useFormik } from 'formik';
+import { ErrorMessage } from '@commercetools-uikit/messages';
 import memoize from 'memoize-one';
 import { useIntl } from 'react-intl';
 import messages from './messages';
@@ -180,6 +181,32 @@ const CartDiscount: FC<Props> = ({ cart, onApplyDirectDiscount }) => {
               NumberField.toFieldErrors<FormikType>(formik.errors)
                 .discountValueRelative
             }
+            renderError={(key: string) => {
+              switch (key) {
+                case 'cartDiscountOutOfBoundaries': {
+                  return (
+                    <ErrorMessage>
+                      {intl.formatMessage(messages.cartDiscountOutOfBoundaries)}
+                    </ErrorMessage>
+                  );
+                }
+                case 'cartDiscountTooPrecise': {
+                  return (
+                    <ErrorMessage>
+                      {intl.formatMessage(messages.cartDiscountTooPrecise)}
+                    </ErrorMessage>
+                  );
+                }
+                case 'missing': {
+                  return (
+                    <ErrorMessage>
+                      {intl.formatMessage(messages.missing)}
+                    </ErrorMessage>
+                  );
+                }
+              }
+              return <ErrorMessage>{key}</ErrorMessage>;
+            }}
             touched={!!formik.touched.discountValueRelative}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}

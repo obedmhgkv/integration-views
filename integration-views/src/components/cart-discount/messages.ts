@@ -42,4 +42,20 @@ export default defineMessages({
     id: 'Orders.Create.Step.LineItems.AppliedDiscounts.targetType',
     defaultMessage: 'Target Type',
   },
+  missing: {
+    id: 'Orders.Create.Step.LineItems.AppliedDiscounts.missing',
+    defaultMessage: 'This field is required. Provide a value.',
+  },
+  cartDiscountOutOfBoundaries: {
+    id: 'Orders.quotes.draft.discounts.relativeCartDiscountOutOfBoundaries',
+    description: 'Error message on discount value field',
+    defaultMessage:
+      'Relative discount value must be a number between 0 and 100',
+  },
+  cartDiscountTooPrecise: {
+    id: 'Orders.quotes.draft.discounts.relativeCartDiscountTooPrecise',
+    description: 'Error message on discount value field',
+    defaultMessage:
+      'Relative discount value must be a number with max. 2 fraction digits',
+  },
 });
