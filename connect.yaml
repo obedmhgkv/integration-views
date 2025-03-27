@@ -1,12 +1,20 @@
 deployAs:
    - name: integration-views
-     applicationType: merchant-center-custom-application
-     endpoint: /
+     applicationType: merchant-center-custom-view
      configuration:
        standardConfiguration:
-         - key: APPLICATION_ID
-           description: The Custom Application ID is provided when you add a Custom Application in the Merchant Center
+         - key: CUSTOM_VIEW_ID
+           description: The Custom View ID is provided when you add a Custom View in the Merchant Center
            required: true
          - key: CLOUD_IDENTIFIER
-           description: The identifier of the cloud Region that the Custom Application uses to connect to Composable Commerce. The values map to the actual Merchant Center API URL for that Region
+           description: one of the following gcp-us, gcp-eu, aws-us, aws-eu
+           required: true
+           default: 'gcp-eu'
+         - key: GOOGLE_MAP_ORIGIN
+           description: the fake sender address to be used
+           required: true
+           default: 'Adams-Lehmann-Straße+44,+80797+München'
+       securedConfiguration:
+         - key: GOOGLE_MAP_KEY
+           description: The Google Map Key to be used
            required: true
