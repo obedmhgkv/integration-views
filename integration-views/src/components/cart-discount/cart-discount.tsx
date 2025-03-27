@@ -28,6 +28,8 @@ import {
   fromDirectDiscountToDirectDiscountDraft,
   validate,
 } from './conversion';
+import Stamp from '@commercetools-uikit/stamp';
+import { TTone } from '@commercetools-uikit/stamp/dist/declarations/src/stamp';
 
 export const DISCOUNT_SELECT_TYPES = {
   RELATIVE: 'relative',
@@ -128,9 +130,35 @@ const CartDiscount: FC<Props> = ({ cart, onApplyDirectDiscount }) => {
   ) => {
     switch (column.key) {
       case 'targetType':
-        return discountCode.target?.type;
+        let targetTypeLabel = discountCode.target?.type;
+        switch (discountCode.target?.type) {
+          case 'totalPrice':
+            targetTypeLabel = intl.formatMessage(
+              messages.cartDiscountOnCartTotalPrice
+            );
+            break;
+        }
+        return targetTypeLabel;
       case 'type':
-        return discountCode.value?.type;
+        let typeTone: TTone = 'primary';
+        let typeLabel = discountCode.value?.type;
+        switch (discountCode.value?.type) {
+          case 'relative':
+            typeTone = 'primary';
+            typeLabel = intl.formatMessage(messages.relativeCartDiscountOption);
+            break;
+          case 'absolute':
+            typeTone = 'secondary';
+            typeLabel = intl.formatMessage(messages.absoluteCartDiscountOption);
+            break;
+          // case 'Ordered':
+          //   typeTone = 'information';
+          //   break;
+          // case 'Frozen':
+          //   typeTone = 'warning';
+          //   break;
+        }
+        return <Stamp tone={typeTone} label={typeLabel} isCondensed={true} />;
       case 'value': {
         switch (discountCode.value.type) {
           case 'relative': {

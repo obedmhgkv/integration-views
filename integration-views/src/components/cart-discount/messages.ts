@@ -14,12 +14,12 @@ export default defineMessages({
   relativeCartDiscountOption: {
     id: 'Orders.quotes.draft.discounts.relativeCartDiscountOption',
     description: 'Select dropdown option for applying cart discount',
-    defaultMessage: 'relative (%)',
+    defaultMessage: 'Relative (%)',
   },
   absoluteCartDiscountOption: {
     id: 'Orders.quotes.draft.discounts.absoluteCartDiscountOption',
     description: 'Select dropdown option for applying cart discount',
-    defaultMessage: 'absolute',
+    defaultMessage: 'Absolute',
   },
   applyDiscountText: {
     id: 'Orders.quotes.draft.discounts.applyDiscountText',
@@ -57,5 +57,9 @@ export default defineMessages({
     description: 'Error message on discount value field',
     defaultMessage:
       'Relative discount value must be a number with max. 2 fraction digits',
+  },
+  cartDiscountOnCartTotalPrice: {
+    id: 'Orders.quotes.draft.discounts.cartDiscountOnCartTotalPrice',
+    defaultMessage: 'Discount on Cart total price',
   },
 });
