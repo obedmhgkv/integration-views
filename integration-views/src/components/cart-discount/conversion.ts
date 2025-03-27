@@ -5,7 +5,20 @@ import {
   TDirectDiscountDraft,
   TRelativeDiscountValue,
 } from '../../types/generated/ctp';
-import { FormikType } from './cart-discount';
+import { DISCOUNT_SELECT_TYPES, FormikType } from './cart-discount';
+import TextInput from '@commercetools-uikit/text-input';
+import omitEmpty from 'omit-empty-es';
+
+type TErrors = {
+  discountValueRelative: {
+    cartDiscountOutOfBoundaries?: boolean;
+    cartDiscountTooPrecise?: boolean;
+    missing?: boolean;
+  };
+  discountValueAbsolute: {
+    missing?: boolean;
+  };
+};
 
 export const fromDirectDiscountToDirectDiscountDraft = (
   directDiscounts: Array<TDirectDiscount>
@@ -61,4 +74,38 @@ export const cartDiscountValueInputFromFormikValues = (values: FormikType) => {
     };
   }
   return cartDiscountValueInput;
+};
+
+export const validate = (values: FormikType) => {
+  const errors: TErrors = {
+    discountValueRelative: {},
+    discountValueAbsolute: {},
+  };
+  if (values.discountType === DISCOUNT_SELECT_TYPES.RELATIVE) {
+    if (
+      !values.discountValueRelative ||
+      TextInput.isEmpty(String(values.discountValueRelative))
+    ) {
+      errors.discountValueRelative.missing = true;
+    } else {
+      const value = parseFloat(values.discountValueRelative);
+      if (value < 0 || value > 100) {
+        errors.discountValueRelative.cartDiscountOutOfBoundaries = true;
+      }
+      if (value && parseFloat(value.toFixed?.(2)) !== value) {
+        errors.discountValueRelative.cartDiscountTooPrecise = true;
+      }
+    }
+  } else if (values.discountType === DISCOUNT_SELECT_TYPES.ABSOLUTE) {
+    if (
+      !values.discountValueAbsolute ||
+      !values.discountValueAbsolute.currencyCode ||
+      !values.discountValueAbsolute.amount ||
+      TextInput.isEmpty(String(values.discountValueAbsolute.currencyCode)) ||
+      TextInput.isEmpty(String(values.discountValueAbsolute.amount))
+    ) {
+      errors.discountValueAbsolute.missing = true;
+    }
+  }
+  return omitEmpty<TErrors>(errors);
 };

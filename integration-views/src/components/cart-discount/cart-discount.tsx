@@ -15,18 +15,17 @@ import {
 } from '../../types/generated/ctp';
 import SelectField from '@commercetools-uikit/select-field';
 import { PERMISSIONS } from '../../constants';
-import omitEmpty from 'omit-empty-es';
 import { TMoneyFieldProps } from '@commercetools-uikit/money-field/dist/declarations/src/money-field';
 import { useIsAuthorized } from '@commercetools-frontend/permissions';
 import { BinFilledIcon, PlusBoldIcon } from '@commercetools-uikit/icons';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
-import TextInput from '@commercetools-uikit/text-input';
 import DataTable, { TColumn } from '@commercetools-uikit/data-table';
 import IconButton from '@commercetools-uikit/icon-button';
 import { formatMoney, formatPercentage } from '../../helpers';
 import {
   cartDiscountValueInputFromFormikValues,
   fromDirectDiscountToDirectDiscountDraft,
+  validate,
 } from './conversion';
 
 export const DISCOUNT_SELECT_TYPES = {
@@ -67,7 +66,7 @@ const getOptions = memoize((intl) => {
   ];
 });
 
-interface CartDiscountProps {
+interface Props {
   cart: TCart;
   onApplyDirectDiscount: (
     directDiscounts: Array<TDirectDiscountDraft>
@@ -80,60 +79,12 @@ export type FormikType = {
   discountValueRelative: string;
 };
 
-type TErrors = {
-  discountValueRelative: {
-    cartDiscountOutOfBoundaries?: boolean;
-    cartDiscountTooPrecise?: boolean;
-    missing?: boolean;
-  };
-  discountValueAbsolute: {
-    missing?: boolean;
-  };
-};
-
-const CartDiscount: FC<CartDiscountProps> = ({
-  cart,
-  onApplyDirectDiscount,
-}) => {
+const CartDiscount: FC<Props> = ({ cart, onApplyDirectDiscount }) => {
   const intl = useIntl();
 
   const canManage = useIsAuthorized({
     demandedPermissions: [PERMISSIONS.Manage],
   });
-
-  const validate = (values: FormikType) => {
-    const errors: TErrors = {
-      discountValueRelative: {},
-      discountValueAbsolute: {},
-    };
-    if (values.discountType === DISCOUNT_SELECT_TYPES.RELATIVE) {
-      if (
-        !values.discountValueRelative ||
-        TextInput.isEmpty(String(values.discountValueRelative))
-      ) {
-        errors.discountValueRelative.missing = true;
-      } else {
-        const value = parseFloat(values.discountValueRelative);
-        if (value < 0 || value > 100) {
-          errors.discountValueRelative.cartDiscountOutOfBoundaries = true;
-        }
-        if (value && parseFloat(value.toFixed?.(2)) !== value) {
-          errors.discountValueRelative.cartDiscountTooPrecise = true;
-        }
-      }
-    } else if (values.discountType === DISCOUNT_SELECT_TYPES.ABSOLUTE) {
-      if (
-        !values.discountValueAbsolute ||
-        !values.discountValueAbsolute.currencyCode ||
-        !values.discountValueAbsolute.amount ||
-        TextInput.isEmpty(String(values.discountValueAbsolute.currencyCode)) ||
-        TextInput.isEmpty(String(values.discountValueAbsolute.amount))
-      ) {
-        errors.discountValueAbsolute.missing = true;
-      }
-    }
-    return omitEmpty<TErrors>(errors);
-  };
 
   const formik = useFormik<FormikType>({
     initialValues: {
