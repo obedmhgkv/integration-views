@@ -4,7 +4,7 @@ import Text from '@commercetools-uikit/text';
 import Spacings from '@commercetools-uikit/spacings';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import { PageNotFound } from '@commercetools-frontend/application-components';
-import DataTable, { TColumn } from '@commercetools-uikit/data-table';
+import { TColumn } from '@commercetools-uikit/data-table';
 import {
   formatLocalizedString,
   transformLocalizedFieldToLocalizedString,
@@ -12,7 +12,6 @@ import {
 import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { usePaginationState } from '@commercetools-uikit/hooks';
-import { Pagination } from '@commercetools-uikit/pagination';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useShoppingListsFetcher } from '../../hooks/use-shopping-lists-hook';
 import { getErrorMessage } from '../../helpers';
@@ -20,17 +19,18 @@ import { TShoppingList } from '../../types/generated/ctp';
 import { SuspendedRoute } from '@commercetools-frontend/application-shell';
 import { Switch } from 'react-router';
 import CustomerShoppingList from '../customer-shopping-list/customer-shopping-list';
+import { PaginatableDataTable } from 'commercetools-demo-shared-paginatable-data-table';
 
 type Props = { id: string };
 
 export const CustomerShoppingLists: FC<Props> = ({ id }) => {
-  const { page, perPage } = usePaginationState();
+  const paginationState = usePaginationState();
   const { push } = useHistory();
   const match = useRouteMatch();
 
   const { shoppingLists, loading, error, refetch } = useShoppingListsFetcher({
-    limit: perPage.value,
-    offset: (page.value - 1) * perPage.value,
+    limit: paginationState.perPage.value,
+    offset: (paginationState.page.value - 1) * paginationState.perPage.value,
     where: `customer(id="${id}")`,
   });
   const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
@@ -92,19 +92,14 @@ export const CustomerShoppingLists: FC<Props> = ({ id }) => {
   };
   return (
     <Spacings.Stack scale={'l'}>
-      <DataTable
+      <PaginatableDataTable
         rows={shoppingLists.results}
-        columns={columns}
+        visibleColumns={columns}
         itemRenderer={itemRenderer}
         onRowClick={(row) => {
           push(`${match.url}/${row.id}`);
         }}
-      />
-      <Pagination
-        page={page.value}
-        onPageChange={page.onChange}
-        perPage={perPage.value}
-        onPerPageChange={perPage.onChange}
+        paginationState={paginationState}
         totalItems={shoppingLists.total}
       />
       <Switch>
