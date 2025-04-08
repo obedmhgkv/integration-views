@@ -44,12 +44,14 @@ import {
 import { useCartUpdater } from '../../hooks/use-carts-hook';
 import { DOMAINS } from '@commercetools-frontend/constants';
 import Constraints from '@commercetools-uikit/constraints';
-import { ProductSearchInput } from '../variant-search';
-import { ProductValue } from '../variant-search/product-search-input';
 import CartItemTableDelete from './cart-item-table-delete/cart-item-table-delete';
 import { useIsAuthorized } from '@commercetools-frontend/permissions';
 import { PERMISSIONS } from '../../constants';
 import { TDataTableManagerProps } from '@commercetools-uikit/data-table-manager/dist/declarations/src/types';
+import {
+  AsyncVariantSelector,
+  VariantValue,
+} from 'commercetools-demo-shared-async-variant-selector';
 
 type Props = { cart: TCart };
 
@@ -275,7 +277,7 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
     }
   };
 
-  const handleAddVariantToCart = async (variant: ProductValue) => {
+  const handleAddVariantToCart = async (variant: VariantValue) => {
     await cartUpdater
       .execute({
         updateActions: [{ addLineItem: { sku: variant.sku, quantity: 1 } }],
@@ -315,10 +317,9 @@ const CartDetailsItems: FC<Props> = ({ cart }) => {
         </Constraints.Horizontal>
 
         <Constraints.Horizontal max={13}>
-          <ProductSearchInput
+          <AsyncVariantSelector
             name={'variantSearch'}
-            onChange={async (event) => {
-              const product = event.target.value as ProductValue;
+            onChange={async (product) => {
               await handleAddVariantToCart(product);
             }}
           />
