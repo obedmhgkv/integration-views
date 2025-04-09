@@ -23,7 +23,7 @@ import { DOMAINS } from '@commercetools-frontend/constants';
 import CartDetailsGeneralInfoHeader from '../cart-details-general-info-header';
 import Card from '@commercetools-uikit/card';
 import CartDetailsItems from '../cart-details-items/cart-details-items';
-import CartSummaryPricingBreakdown from '../cart-summary-pricing-breakdown';
+import { CartSummaryPricingBreakdown } from 'commercetools-demo-shared-cart-summary-pricing-breakdown';
 import AddressesPanel from '../addresses-panel';
 import CartAppliedDiscountsPanel from '../cart-applied-discounts-panel';
 import {

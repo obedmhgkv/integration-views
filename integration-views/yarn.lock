@@ -1923,7 +1923,7 @@
     lodash "4.17.21"
     redux-thunk "2.4.2"
 
-"@commercetools-frontend/application-components@23.2.2":
+"@commercetools-frontend/application-components@23.2.2", "@commercetools-frontend/application-components@^23.2.2":
   version "23.2.2"
   resolved "https://registry.yarnpkg.com/@commercetools-frontend/application-components/-/application-components-23.2.2.tgz#d9b59a8d5db71a5163c24aee7202a41b61d3d1da"
   integrity sha512-5WzOP6PXffvPGGX+1W7ISddg9wdVlOnQHPW+YPtdVpWCSxlP5zohu7lQaq+l3QXDJQYtokxLSaLLkHUPPgQl4Q==
@@ -3149,7 +3149,7 @@
     prop-types "15.8.1"
     react-is "17.0.2"
 
-"@commercetools-uikit/secondary-button@19.22.7", "@commercetools-uikit/secondary-button@^19.22.3":
+"@commercetools-uikit/secondary-button@19.22.7", "@commercetools-uikit/secondary-button@^19.22.3", "@commercetools-uikit/secondary-button@^19.22.7":
   version "19.22.7"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/secondary-button/-/secondary-button-19.22.7.tgz#159b6c5897db12a9f1d7f8c1ea23591b001d402b"
   integrity sha512-62VvH2D+nd2m0XJ+YkRcTbAZV+YQoFmR80d2kxEGN84qCfaIsl9UVLwqJxYwTEW4YwxV3XPaGjfXHZp0NnfzoA==
@@ -8448,6 +8448,22 @@ commercetools-demo-shared-async-variant-selector@^0.0.1:
     "@commercetools-uikit/text" "^19.22.7"
     "@commercetools-uikit/utils" "19.22.7"
     "@emotion/react" "^11.10.5"
+    react-intl "^6.3.2"
+
+commercetools-demo-shared-cart-summary-pricing-breakdown@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/commercetools-demo-shared-cart-summary-pricing-breakdown/-/commercetools-demo-shared-cart-summary-pricing-breakdown-0.0.3.tgz#047a19e82a8ef901db8dbc5253ac915fedbcd221"
+  integrity sha512-55Olb+PlWfRDCYir8BnV3GjP9OE7m27HcdgYr5Hk2WeNLy5g5MdaFDQ8I1ia2leaZq+xxv2Fns5zKw5o+gpOZw==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-frontend/application-components" "^23.2.2"
+    "@commercetools-uikit/notifications" "^19.22.7"
+    "@commercetools-uikit/secondary-button" "^19.22.7"
+    "@commercetools-uikit/spacings" "^19.22.7"
+    "@commercetools-uikit/text" "^19.22.7"
+    "@emotion/react" "^11.14.0"
+    lodash "^4.17.21"
     react-intl "^6.3.2"
 
 commercetools-demo-shared-paginatable-data-table@^0.0.1:

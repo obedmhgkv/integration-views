@@ -22,7 +22,7 @@ import {
   determinteIfTaxRateSameInMultiMode,
   getGrossPriceWithoutShipping,
   getGrossPriceWithoutShippingMulti,
-} from '../cart-summary-pricing-breakdown/order-prices';
+} from 'commercetools-demo-shared-cart-summary-pricing-breakdown';
 import messages from './messages';
 import CartItemTableInventoryCell from './cart-item-table-inventory-cell';
 import {
