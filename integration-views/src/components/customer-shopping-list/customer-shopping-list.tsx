@@ -33,13 +33,16 @@ import {
 import Constraints from '@commercetools-uikit/constraints';
 import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
 import { PERMISSIONS } from '../../constants';
-import ImageContainer from '../image-container';
-import QuantitySelector from '../quantity-selector';
-import CartItemTableDelete from '../cart-details-items/cart-item-table-delete/cart-item-table-delete';
 import {
   AsyncVariantSelector,
   VariantValue,
 } from 'commercetools-demo-shared-async-variant-selector';
+import { BinFilledIcon } from '@commercetools-uikit/icons';
+import IconButton from '@commercetools-uikit/icon-button';
+import {
+  QuantitySelector,
+  ImageContainer,
+} from 'commercetools-demo-shared-cart-handling';
 
 type Props = {
   onClose: () => void;
@@ -195,12 +198,12 @@ export const CustomerShoppingList: FC<Props> = ({ onClose }) => {
       }
       case 'actions':
         return (
-          <CartItemTableDelete
-            handleRemoveLineItem={async () =>
-              await handleRemoveLineItem(item.id)
-            }
-            isDisabled={!canManage}
+          <IconButton
+            icon={<BinFilledIcon />}
+            label={'Delete'}
+            onClick={async () => await handleRemoveLineItem(item.id)}
             size={'medium'}
+            isDisabled={!canManage}
           />
         );
       case 'quantity':

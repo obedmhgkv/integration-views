@@ -1,45 +1,45 @@
 import { FC } from 'react';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
-import { FormattedMessage, useIntl } from 'react-intl';
-import messages from './messages';
 import { TCart } from '../../types/generated/ctp';
+import { ContentNotification } from '@commercetools-uikit/notifications';
+import { getErrorMessage } from '../../helpers';
+import LoadingSpinner from '@commercetools-uikit/loading-spinner';
+import { PageNotFound } from '@commercetools-frontend/application-components';
+import { CartDetailsGeneralInfoHeader as ExternalCartDetailsGeneralInfoHeader } from 'commercetools-demo-shared-cart-handling';
+import { useOrdersFetcher } from '../../hooks/use-order-hook';
 
 type Props = { cart: TCart };
 const CartDetailsGeneralInfoHeader: FC<Props> = ({ cart }) => {
-  const intl = useIntl();
+  const { orders, loading, error } = useOrdersFetcher({
+    offset: 0,
+    limit: 10,
+    where: `cart(id="${cart.id}")`,
+  });
+  if (error) {
+    return (
+      <ContentNotification type="error">
+        <Text.Body>{getErrorMessage(error)}</Text.Body>
+      </ContentNotification>
+    );
+  }
+  if (loading) {
+    return (
+      <Spacings.Stack alignItems="center">
+        <LoadingSpinner />
+      </Spacings.Stack>
+    );
+  }
+
+  if (!orders || !orders.results) {
+    return <PageNotFound />;
+  }
 
   return (
-    <Spacings.Inline justifyContent={'space-between'}>
-      <Text.Detail tone="secondary">
-        <FormattedMessage
-          {...messages.dateCreated}
-          values={{
-            datetime:
-              intl.formatDate(cart.createdAt) +
-              ' ' +
-              intl.formatTime(cart.createdAt),
-          }}
-        />
-      </Text.Detail>
-      <Text.Detail tone="secondary">
-        <FormattedMessage
-          {...messages.dateModified}
-          values={{
-            datetime:
-              intl.formatDate(cart.lastModifiedAt) +
-              ' ' +
-              intl.formatTime(cart.lastModifiedAt),
-          }}
-        />
-      </Text.Detail>
-      <FormattedMessage
-        {...messages.cartState}
-        values={{
-          cartState: cart.cartState,
-        }}
-      />
-    </Spacings.Inline>
+    <ExternalCartDetailsGeneralInfoHeader
+      cart={cart}
+      orderId={orders.results[0]?.id}
+    />
   );
 };
 

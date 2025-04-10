@@ -22,15 +22,19 @@ import { useShowNotification } from '@commercetools-frontend/actions-global';
 import { DOMAINS } from '@commercetools-frontend/constants';
 import CartDetailsGeneralInfoHeader from '../cart-details-general-info-header';
 import Card from '@commercetools-uikit/card';
-import CartDetailsItems from '../cart-details-items/cart-details-items';
-import { CartSummaryPricingBreakdown } from 'commercetools-demo-shared-cart-summary-pricing-breakdown';
-import AddressesPanel from '../addresses-panel';
-import CartAppliedDiscountsPanel from '../cart-applied-discounts-panel';
+import {
+  AddressesPanel,
+  CartSummaryPricingBreakdown,
+  CartDetailsItems,
+  CartAppliedDiscountsPanel,
+} from 'commercetools-demo-shared-cart-handling';
 import {
   TCartUpdateAction,
   TDirectDiscountDraft,
 } from '../../types/generated/ctp';
 import { graphQLErrorHandler } from '../../utils/error-handling';
+import { useIsAuthorized } from '@commercetools-frontend/permissions';
+import { PERMISSIONS } from '../../constants';
 
 type Props = { onClose: () => Promise<void> };
 
@@ -45,6 +49,10 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
   const { cart, loading, error, refetch } = useCartFetcher({
     id: id,
     locale: dataLocale,
+  });
+
+  const canManage = useIsAuthorized({
+    demandedPermissions: [PERMISSIONS.Manage],
   });
 
   const cartDeleter = useCartDeleter();
@@ -160,6 +168,7 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
               onApplyDiscountCode={handleApplyDiscountCode}
               onRemoveDiscountCode={handleRemoveDiscountCode}
               onApplyDirectDiscount={handleApplyDirectDiscount}
+              canManage={canManage}
             />
           </Spacings.Stack>
           {(cart.lineItems.length >= 1 || cart.customLineItems.length >= 1) && (

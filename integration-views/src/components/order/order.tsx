@@ -19,7 +19,6 @@ import {
 } from '@commercetools-frontend/l10n';
 import { useCustomViewContext } from '@commercetools-frontend/application-shell-connectors';
 import Label from '@commercetools-uikit/label';
-import Steps from '../steps';
 import Grid from '@commercetools-uikit/grid';
 import OrderDetailsItem from './order-details-item';
 import {
@@ -30,6 +29,7 @@ import {
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import { ComponentProps } from '../../routes';
+import Steps from 'commercetools-demo-shared-stepper';
 
 const Order: FC<ComponentProps> = ({ id }) => {
   const { dataLocale, projectLanguages, googleMapOrigin, googleMapKey } =
