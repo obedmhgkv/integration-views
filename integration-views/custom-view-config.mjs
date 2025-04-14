@@ -9,8 +9,8 @@ const config = {
   env: {
     development: {
       initialProjectKey: 'tech-sales-good-store',
-      //hostUriPath: '/tech-sales-good-store/orders/5838b628-38d2-47c1-8576-a1faefa1c21f/general'
       hostUriPath:
+        // '/tech-sales-good-store/orders/9a08bc59-3709-47ab-bae9-6654b85cad08/general',
         '/tech-sales-good-store/customers/a5fc94a7-c479-4ed5-ac47-13d23890e725/general',
     },
     production: {

@@ -1,11 +1,6 @@
 import { FC, useMemo } from 'react';
-import { useMcQuery } from '@commercetools-frontend/application-shell';
-import { TLineItem, TQuery, TQuery_OrderArgs } from '../../types/generated/ctp';
-import FetchOrder from './fetch-order.ctp.graphql';
-import {
-  GRAPHQL_TARGETS,
-  NO_VALUE_FALLBACK,
-} from '@commercetools-frontend/constants';
+import { TLineItem } from '../../types/generated/ctp';
+import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { ContentNotification } from '@commercetools-uikit/notifications';
 import { getErrorMessage } from '../../helpers';
 import Text from '@commercetools-uikit/text';
@@ -30,6 +25,7 @@ import SecondaryButton from '@commercetools-uikit/secondary-button';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import { ComponentProps } from '../../routes';
 import Steps from 'commercetools-demo-shared-stepper';
+import { useOrderFetcher } from 'commercetools-demo-shared-data-fetching-hooks';
 
 const Order: FC<ComponentProps> = ({ id }) => {
   const { dataLocale, projectLanguages, googleMapOrigin, googleMapKey } =
@@ -78,17 +74,9 @@ const Order: FC<ComponentProps> = ({ id }) => {
     ],
     []
   );
-  const { data, error, loading } = useMcQuery<TQuery, TQuery_OrderArgs>(
-    FetchOrder,
-    {
-      variables: {
-        id: id,
-      },
-      context: {
-        target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
-      },
-    }
-  );
+  const { order, error, loading } = useOrderFetcher({
+    id: id,
+  });
 
   if (error) {
     return (
@@ -98,7 +86,7 @@ const Order: FC<ComponentProps> = ({ id }) => {
     );
   }
 
-  if (!loading && !data?.order) {
+  if (!loading && !order) {
     return (
       <ContentNotification type="info">
         <Text.Body>No Results</Text.Body>
@@ -107,8 +95,8 @@ const Order: FC<ComponentProps> = ({ id }) => {
   }
 
   let to: string = '';
-  if (data?.order?.shippingAddress) {
-    const address = data?.order?.shippingAddress;
+  if (order?.shippingAddress) {
+    const address = order?.shippingAddress;
     if (address?.streetName) {
       to += address?.streetName + '+';
       if (address?.streetNumber) {
@@ -187,7 +175,7 @@ const Order: FC<ComponentProps> = ({ id }) => {
           >
             <Grid.Item>
               <DataTable<TLineItem>
-                rows={data?.order?.lineItems || []}
+                rows={order?.lineItems || []}
                 columns={[
                   { key: 'image', label: 'Image' },
                   { key: 'name', label: 'Name' },
@@ -238,7 +226,7 @@ const Order: FC<ComponentProps> = ({ id }) => {
                   scale={'m'}
                 >
                   <Label>Order ID:</Label>
-                  <Text.Body>{data?.order?.id}</Text.Body>
+                  <Text.Body>{order?.id}</Text.Body>
                 </Spacings.Inline>
                 <Spacings.Inline
                   justifyContent={'space-between'}

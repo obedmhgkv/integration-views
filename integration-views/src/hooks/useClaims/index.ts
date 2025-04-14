@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import axios from 'axios';
 import ClaimMapper from '../../mappers/ClaimMapper';
 

@@ -12,23 +12,3 @@ export const entryPointUriPath =
     : window.app.entryPointUriPath;
 
 export const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
-
-export const PRECISION_TYPES = {
-  highPrecision: 'highPrecision',
-  centPrecision: 'centPrecision',
-};
-
-export const DISCOUNT_VALUE_TYPES = {
-  ABSOLUTE: 'absolute',
-  RELATIVE: 'relative',
-  DIRECT: 'direct-discount',
-};
-
-export enum SHORT_ADDRESS_TYPE {
-  BILLING = 'billing',
-  SHIPPING = 'shipping',
-}
-
-export const INVENTORY_MODES = {
-  NONE: 'None',
-};

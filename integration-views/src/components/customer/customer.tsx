@@ -15,12 +15,12 @@ import {
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import { ComponentProps } from '../../routes';
-import { useCustomerFetcher } from '../../hooks/use-customer-connector/use-customers-connector';
 import { Route, Switch, useRouteMatch } from 'react-router';
 import CustomerDashboard from '../customer-dashboard/customer-dashboard';
 import CustomerCarts from '../customer-carts/customer-carts';
 import CustomerActions from '../customer-actions/customer-actions';
 import CustomerShoppingLists from '../customer-shopping-lists/customer-shopping-lists';
+import { useCustomerFetcher } from 'commercetools-demo-shared-data-fetching-hooks';
 
 const Customer: FC<ComponentProps> = ({ id }) => {
   const match = useRouteMatch();

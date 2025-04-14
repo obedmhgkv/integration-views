@@ -8,10 +8,11 @@ import messages from './messages';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router';
 import {
+  graphQLErrorHandler,
   useCartDeleter,
   useCartFetcher,
   useCartUpdater,
-} from '../../hooks/use-carts-hook';
+} from 'commercetools-demo-shared-data-fetching-hooks';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { ContentNotification } from '@commercetools-uikit/notifications';
 import Text from '@commercetools-uikit/text';
@@ -29,10 +30,10 @@ import {
   CartAppliedDiscountsPanel,
 } from 'commercetools-demo-shared-cart-handling';
 import {
+  TCartState,
   TCartUpdateAction,
   TDirectDiscountDraft,
 } from '../../types/generated/ctp';
-import { graphQLErrorHandler } from '../../utils/error-handling';
 import { useIsAuthorized } from '@commercetools-frontend/permissions';
 import { PERMISSIONS } from '../../constants';
 
@@ -94,7 +95,7 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
   const handleUpdateCart = (actions: Array<TCartUpdateAction>) => {
     return cartUpdater
       .execute({
-        updateActions: actions,
+        actions: actions,
         id: cart.id,
         version: cart.version,
         locale: dataLocale,
@@ -131,6 +132,18 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
       },
     ]);
 
+  const handleCartAction = async () => {
+    if (cart.cartState === TCartState.Active) {
+      await handleUpdateCart([{ freezeCart: { dummy: '' } }]).catch(
+        graphQLErrorHandler(showNotification)
+      );
+    } else if (cart.cartState === TCartState.Frozen) {
+      await handleUpdateCart([{ unfreezeCart: { dummy: '' } }]).catch(
+        graphQLErrorHandler(showNotification)
+      );
+    }
+  };
+
   const handleApplyDirectDiscount = async (
     directDiscounts: Array<TDirectDiscountDraft>
   ) =>
@@ -151,6 +164,17 @@ export const CustomerCart: FC<Props> = ({ onClose }) => {
       onClose={onClose}
       formControls={
         <>
+          {(cart.cartState === TCartState.Active ||
+            cart.cartState === TCartState.Frozen) && (
+            <CustomFormModalPage.FormSecondaryButton
+              onClick={handleCartAction}
+              label={
+                cart.cartState === TCartState.Active
+                  ? 'Freeze Cart'
+                  : 'Unfreeze'
+              }
+            />
+          )}
           <CustomFormModalPage.FormDeleteButton
             onClick={() => handleDelete()}
           />

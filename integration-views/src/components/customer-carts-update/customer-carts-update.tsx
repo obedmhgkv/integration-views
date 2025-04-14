@@ -8,15 +8,14 @@ import {
 import { useIntl } from 'react-intl';
 import messages from './messages';
 import { TCart } from '../../types/generated/ctp';
-import { useCartDeleter, useCartUpdater } from '../../hooks/use-carts-hook';
-import { useCustomViewContext } from '@commercetools-frontend/application-shell-connectors';
 import {
-  TApiErrorNotificationOptions,
-  useShowApiErrorNotification,
-  useShowNotification,
-} from '@commercetools-frontend/actions-global';
+  graphQLErrorHandler,
+  useCartDeleter,
+  useCartUpdater,
+} from 'commercetools-demo-shared-data-fetching-hooks';
+import { useCustomViewContext } from '@commercetools-frontend/application-shell-connectors';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
 import { DOMAINS } from '@commercetools-frontend/constants';
-import { transformErrors } from '../../helpers';
 
 type Props = {
   action: 'delete' | 'freeze' | 'unfreeze';
@@ -34,7 +33,6 @@ export const CustomerCartsUpdate: FC<Props> = ({
   const intl = useIntl();
   const { isModalOpen, closeModal } = useModalState(true);
   const showNotification = useShowNotification();
-  const showApiErrorNotification = useShowApiErrorNotification();
   const { execute } = useCartUpdater();
   const { execute: deleteCart } = useCartDeleter();
   const { dataLocale } = useCustomViewContext((context) => ({
@@ -43,44 +41,36 @@ export const CustomerCartsUpdate: FC<Props> = ({
   console.log(action);
 
   const handleConfirm = async () => {
-    try {
-      if (action === 'freeze') {
-        for (const cart of items) {
-          await execute({
-            updateActions: [{ freezeCart: { dummy: '' } }],
-            version: cart.version,
-            id: cart.id,
-            locale: dataLocale,
-          });
-        }
-      } else if (action == 'unfreeze') {
-        for (const cart of items) {
-          await execute({
-            updateActions: [{ unfreezeCart: { dummy: '' } }],
-            version: cart.version,
-            id: cart.id,
-            locale: dataLocale,
-          });
-        }
-      } else if (action == 'delete') {
-        for (const cart of items) {
-          await deleteCart({ version: cart.version, id: cart.id });
-        }
+    if (action === 'freeze') {
+      for (const cart of items) {
+        await execute({
+          actions: [{ freezeCart: { dummy: '' } }],
+          version: cart.version,
+          id: cart.id,
+          locale: dataLocale,
+        }).catch(graphQLErrorHandler(showNotification));
       }
-      showNotification({
-        kind: 'success',
-        domain: DOMAINS.SIDE,
-        text: intl.formatMessage(messages.updateSuccess),
-      });
-    } catch (graphQLErrors) {
-      const transformedErrors = transformErrors(graphQLErrors);
-      if (transformedErrors.unmappedErrors.length > 0) {
-        showApiErrorNotification({
-          errors:
-            transformedErrors.unmappedErrors as TApiErrorNotificationOptions['errors'],
-        });
+    } else if (action === 'unfreeze') {
+      for (const cart of items) {
+        await execute({
+          actions: [{ unfreezeCart: { dummy: '' } }],
+          version: cart.version,
+          id: cart.id,
+          locale: dataLocale,
+        }).catch(graphQLErrorHandler(showNotification));
+      }
+    } else if (action === 'delete') {
+      for (const cart of items) {
+        await deleteCart({ version: cart.version, id: cart.id }).catch(
+          graphQLErrorHandler(showNotification)
+        );
       }
     }
+    showNotification({
+      kind: 'success',
+      domain: DOMAINS.SIDE,
+      text: intl.formatMessage(messages.updateSuccess),
+    });
 
     onClose();
   };

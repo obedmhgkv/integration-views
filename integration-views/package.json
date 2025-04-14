@@ -92,6 +92,7 @@
     "axios": "^1.7.4",
     "commercetools-demo-shared-async-variant-selector": "^0.0.1",
     "commercetools-demo-shared-cart-handling": "^0.0.4",
+    "commercetools-demo-shared-data-fetching-hooks": "^0.0.5",
     "commercetools-demo-shared-paginatable-data-table": "^0.0.1",
     "commercetools-demo-shared-stepper": "^0.0.1",
     "eslint": "8.56.0",

@@ -6,13 +6,14 @@ import {
 import { useParams } from 'react-router-dom';
 import { useIsAuthorized } from '@commercetools-frontend/permissions';
 import {
+  graphQLErrorHandler,
   useShoppingListDeleter,
   useShoppingListFetcher,
   useShoppingListUpdater,
-} from '../../hooks/use-shopping-lists-hook';
+} from 'commercetools-demo-shared-data-fetching-hooks';
 import { ContentNotification } from '@commercetools-uikit/notifications';
 import Text from '@commercetools-uikit/text';
-import { getErrorMessage, transformErrors } from '../../helpers';
+import { getErrorMessage } from '../../helpers';
 import Spacings from '@commercetools-uikit/spacings';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import DataTable, { TColumn } from '@commercetools-uikit/data-table';
@@ -26,10 +27,7 @@ import {
 } from '@commercetools-frontend/l10n';
 import { DOMAINS, NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
-import {
-  showApiErrorNotification,
-  useShowNotification,
-} from '@commercetools-frontend/actions-global';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
 import Constraints from '@commercetools-uikit/constraints';
 import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
 import { PERMISSIONS } from '../../constants';
@@ -148,14 +146,7 @@ export const CustomerShoppingList: FC<Props> = ({ onClose }) => {
           text: 'Added item',
         });
       })
-      .catch((e) => {
-        const transformedErrors = transformErrors(e);
-        if (transformedErrors.unmappedErrors.length > 0) {
-          showApiErrorNotification({
-            errors: transformedErrors.unmappedErrors,
-          });
-        }
-      });
+      .catch(graphQLErrorHandler(showNotification));
   };
   const itemRenderer = (
     item: TShoppingListLineItem,

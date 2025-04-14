@@ -1,5 +1,0 @@
-mutation ConfirmEmail($tokenValue: String!) {
-    customerConfirmEmail(tokenValue: $tokenValue) {
-        id
-    }
-}

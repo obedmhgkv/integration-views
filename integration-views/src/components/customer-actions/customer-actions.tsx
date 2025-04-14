@@ -9,7 +9,7 @@ import {
   useCustomerConfirmEmail,
   useCustomerCreateEmailVerificationToken,
   useCustomerFetcher,
-} from '../../hooks/use-customer-connector/use-customers-connector';
+} from 'commercetools-demo-shared-data-fetching-hooks';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 
 type Props = { id: string };

@@ -13,7 +13,7 @@ import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { usePaginationState } from '@commercetools-uikit/hooks';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { useShoppingListsFetcher } from '../../hooks/use-shopping-lists-hook';
+import { useShoppingListsFetcher } from 'commercetools-demo-shared-data-fetching-hooks';
 import { getErrorMessage } from '../../helpers';
 import { TShoppingList } from '../../types/generated/ctp';
 import { SuspendedRoute } from '@commercetools-frontend/application-shell';
