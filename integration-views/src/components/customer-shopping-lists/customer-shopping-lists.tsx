@@ -5,7 +5,6 @@ import Spacings from '@commercetools-uikit/spacings';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import { PageNotFound } from '@commercetools-frontend/application-components';
 import { TColumn } from '@commercetools-uikit/data-table';
-import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { usePaginationState } from '@commercetools-uikit/hooks';
 import { useHistory, useRouteMatch } from 'react-router-dom';
@@ -19,13 +18,15 @@ import { Switch } from 'react-router';
 import CustomerShoppingList from '../customer-shopping-list/customer-shopping-list';
 import { PaginatableDataTable } from 'commercetools-demo-shared-paginatable-data-table';
 import {
-  formatLocalizedString,
-  renderDefault,
-} from 'commercetools-demo-shared-helpers';
+  defaultShoppingListsColumnsDefinition,
+  defaultShoppingListsItemRenderer,
+} from 'commercetools-demo-shared-cart-handling';
+import { useIntl } from 'react-intl';
 
 type Props = { id: string };
 
 export const CustomerShoppingLists: FC<Props> = ({ id }) => {
+  const intl = useIntl();
   const paginationState = usePaginationState();
   const { push } = useHistory();
   const match = useRouteMatch();
@@ -62,35 +63,17 @@ export const CustomerShoppingLists: FC<Props> = ({ id }) => {
     { key: 'count', label: 'Line Item count' },
     // { key: 'customer', label: 'Customer' },
   ];
-  const itemRenderer = (
-    item: TShoppingList,
-    column: TColumn<TShoppingList>
-  ) => {
-    switch (column.key) {
-      case 'count': {
-        return item.lineItems?.reduce((a, c) => a + c.quantity, 0);
-      }
-      case 'customer': {
-        return item.customer ? item.customer.email : '';
-      }
-      case 'name': {
-        return formatLocalizedString(
-          item.nameAllLocales,
-          dataLocale,
-          projectLanguages,
-          NO_VALUE_FALLBACK
-        );
-      }
-      default:
-        return renderDefault(item[column.key as keyof TShoppingList]);
-    }
-  };
+
   return (
     <Spacings.Stack scale={'l'}>
       <PaginatableDataTable
         rows={shoppingLists.results}
         visibleColumns={columns}
-        itemRenderer={itemRenderer}
+        columns={defaultShoppingListsColumnsDefinition({ intl })}
+        itemRenderer={defaultShoppingListsItemRenderer(
+          dataLocale,
+          projectLanguages
+        )}
         onRowClick={(row) => {
           push(`${match.url}/${row.id}`);
         }}

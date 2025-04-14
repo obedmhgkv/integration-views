@@ -23,18 +23,10 @@ import { SuspendedRoute } from '@commercetools-frontend/application-shell';
 import CustomerCart from '../customer-cart/customer-cart';
 import { PaginatableDataTable } from 'commercetools-demo-shared-paginatable-data-table';
 import {
-  createHiddenColumnDefinitions,
-  createVisibleColumnDefinitions,
-} from './column-definitions';
-import { TCart } from '../../types/generated/ctp';
-import { TColumn } from '@commercetools-uikit/data-table';
-import { TTone } from '@commercetools-uikit/stamp/dist/declarations/src/stamp';
-import Stamp from '@commercetools-uikit/stamp';
-import {
-  formatAddress,
-  formatMoney,
-  renderDefault,
-} from 'commercetools-demo-shared-helpers';
+  defaultCartsColumnsDefinition,
+  defaultCartsItemRenderer,
+} from 'commercetools-demo-shared-cart-handling';
+import { createVisibleColumnDefinitions } from './column-definitions';
 
 type Props = { id: string };
 
@@ -80,43 +72,6 @@ export const CustomerCarts: FC<Props> = ({ id }) => {
 
   const { results } = carts;
 
-  const itemRenderer = (item: TCart, column: TColumn<TCart>) => {
-    switch (column.key) {
-      case 'createdAt':
-        return intl.formatDate(item.createdAt);
-      case 'lastModifiedAt':
-        return intl.formatDate(item.lastModifiedAt);
-      case 'cartState': {
-        let tone: TTone = 'primary';
-        switch (item.cartState) {
-          case 'Active':
-            tone = 'primary';
-            break;
-          case 'Merged':
-            tone = 'secondary';
-            break;
-          case 'Ordered':
-            tone = 'information';
-            break;
-          case 'Frozen':
-            tone = 'warning';
-            break;
-        }
-        return <Stamp tone={tone} label={item.cartState} isCondensed={true} />;
-      }
-      case 'count':
-        return item.lineItems?.reduce((a, c) => a + c.quantity, 0);
-      case 'totalPrice':
-        return formatMoney(item.totalPrice, intl);
-      case 'shippingAddress':
-        return formatAddress(item.shippingAddress);
-      case 'billingAddress':
-        return formatAddress(item.billingAddress);
-      default:
-        return renderDefault(item[column.key as keyof TCart]);
-    }
-  };
-
   return (
     <>
       {carts.total === 0 && <div>{intl.formatMessage(messages.noResults)}</div>}
@@ -124,9 +79,9 @@ export const CustomerCarts: FC<Props> = ({ id }) => {
         <PageContentFull>
           <PaginatableDataTable
             visibleColumns={createVisibleColumnDefinitions()}
-            columns={createHiddenColumnDefinitions(intl.formatMessage)}
+            columns={defaultCartsColumnsDefinition({ intl })}
             rows={results}
-            itemRenderer={itemRenderer}
+            itemRenderer={defaultCartsItemRenderer(intl)}
             onRowClick={(row) => push(`${match.url}/${row.id}`)}
             paginationState={paginationState}
             totalItems={carts.total}

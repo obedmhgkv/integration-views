@@ -16,13 +16,9 @@ import { ContentNotification } from '@commercetools-uikit/notifications';
 import Text from '@commercetools-uikit/text';
 import Spacings from '@commercetools-uikit/spacings';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
-import DataTable, { TColumn } from '@commercetools-uikit/data-table';
-import {
-  TShoppingListLineItem,
-  TShoppingListUpdateAction,
-} from '../../types/generated/ctp';
+import { TShoppingListUpdateAction } from '../../types/generated/ctp';
 
-import { DOMAINS, NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
+import { DOMAINS } from '@commercetools-frontend/constants';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { useShowNotification } from '@commercetools-frontend/actions-global';
 import Constraints from '@commercetools-uikit/constraints';
@@ -32,22 +28,19 @@ import {
   AsyncVariantSelector,
   VariantValue,
 } from 'commercetools-demo-shared-async-variant-selector';
-import { BinFilledIcon } from '@commercetools-uikit/icons';
-import IconButton from '@commercetools-uikit/icon-button';
 import {
-  QuantitySelector,
-  ImageContainer,
+  defaultShoppingListColumnsDefinition,
+  defaultShoppingListItemRenderer,
 } from 'commercetools-demo-shared-cart-handling';
-import {
-  formatLocalizedString,
-  renderDefault,
-} from 'commercetools-demo-shared-helpers';
+import { useIntl } from 'react-intl';
+import { PaginatableDataTable } from 'commercetools-demo-shared-paginatable-data-table';
 
 type Props = {
   onClose: () => void;
 };
 
 export const CustomerShoppingList: FC<Props> = ({ onClose }) => {
+  const intl = useIntl();
   const { id } = useParams<{ id: string }>();
   const showNotification = useShowNotification();
   const { dataLocale, projectLanguages } = useApplicationContext((context) => ({
@@ -149,69 +142,7 @@ export const CustomerShoppingList: FC<Props> = ({ onClose }) => {
       })
       .catch(graphQLErrorHandler(showNotification));
   };
-  const itemRenderer = (
-    item: TShoppingListLineItem,
-    column: TColumn<TShoppingListLineItem>
-  ) => {
-    const itemName = formatLocalizedString(
-      item.nameAllLocales ?? [],
-      dataLocale,
-      projectLanguages,
-      NO_VALUE_FALLBACK
-    );
-    switch (column.key) {
-      case 'name': {
-        return (
-          <Spacings.Inline alignItems="center">
-            <ImageContainer
-              label={itemName}
-              url={item.variant?.images[0].url}
-            />
-            <div>
-              <span>{itemName}</span>
-              {item.variant?.sku && (
-                <Text.Detail tone="secondary">
-                  {`SKU: ${item.variant?.sku}`}
-                </Text.Detail>
-              )}
-              {item.variant?.key && (
-                <Text.Detail tone="secondary">{`Key: ${item.variant?.key}`}</Text.Detail>
-              )}
-            </div>
-          </Spacings.Inline>
-        );
-      }
-      case 'actions':
-        return (
-          <IconButton
-            icon={<BinFilledIcon />}
-            label={'Delete'}
-            onClick={async () => await handleRemoveLineItem(item.id)}
-            size={'medium'}
-            isDisabled={!canManage}
-          />
-        );
-      case 'quantity':
-        return (
-          <QuantitySelector
-            onChange={async (quantity) =>
-              await handleChangeQuantity(item.id, quantity)
-            }
-            quantity={item.quantity}
-          />
-        );
-      default:
-        return renderDefault(item[column.key as keyof TShoppingListLineItem]);
-    }
-  };
-  const columns: Array<TColumn<TShoppingListLineItem>> = [
-    { key: 'name', label: 'Name' },
-    { key: 'quantity', label: 'Quantity' },
-    {
-      key: 'actions',
-      label: '',
-    },
-  ];
+
   return (
     <CustomFormModalPage
       isOpen
@@ -258,10 +189,17 @@ export const CustomerShoppingList: FC<Props> = ({ onClose }) => {
           onToggle={() => setShoppingListPanelClosed(!shoppingListPanelClosed)}
         >
           {shoppingList.lineItems && (
-            <DataTable
+            <PaginatableDataTable
+              visibleColumns={defaultShoppingListColumnsDefinition({ intl })}
               rows={shoppingList.lineItems}
-              columns={columns}
-              itemRenderer={itemRenderer}
+              columns={defaultShoppingListColumnsDefinition({ intl })}
+              itemRenderer={defaultShoppingListItemRenderer(
+                dataLocale,
+                projectLanguages,
+                canManage,
+                handleRemoveLineItem,
+                handleChangeQuantity
+              )}
             />
           )}
         </CollapsiblePanel>
