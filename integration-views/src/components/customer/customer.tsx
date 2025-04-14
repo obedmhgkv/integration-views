@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { ContentNotification } from '@commercetools-uikit/notifications';
-import { getErrorMessage } from '../../helpers';
 import Text from '@commercetools-uikit/text';
 import {
   TabHeader,
@@ -20,7 +19,10 @@ import CustomerDashboard from '../customer-dashboard/customer-dashboard';
 import CustomerCarts from '../customer-carts/customer-carts';
 import CustomerActions from '../customer-actions/customer-actions';
 import CustomerShoppingLists from '../customer-shopping-lists/customer-shopping-lists';
-import { useCustomerFetcher } from 'commercetools-demo-shared-data-fetching-hooks';
+import {
+  useCustomerFetcher,
+  getErrorMessage,
+} from 'commercetools-demo-shared-data-fetching-hooks';
 
 const Customer: FC<ComponentProps> = ({ id }) => {
   const match = useRouteMatch();

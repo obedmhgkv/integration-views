@@ -4,8 +4,8 @@ import Text from '@commercetools-uikit/text';
 import Spacings from '@commercetools-uikit/spacings';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import { PageNotFound } from '@commercetools-frontend/application-components';
-import { getErrorMessage } from '../../helpers';
 import {
+  getErrorMessage,
   useCustomerConfirmEmail,
   useCustomerCreateEmailVerificationToken,
   useCustomerFetcher,

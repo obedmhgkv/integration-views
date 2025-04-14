@@ -5,21 +5,23 @@ import Spacings from '@commercetools-uikit/spacings';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import { PageNotFound } from '@commercetools-frontend/application-components';
 import { TColumn } from '@commercetools-uikit/data-table';
-import {
-  formatLocalizedString,
-  transformLocalizedFieldToLocalizedString,
-} from '@commercetools-frontend/l10n';
 import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { usePaginationState } from '@commercetools-uikit/hooks';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { useShoppingListsFetcher } from 'commercetools-demo-shared-data-fetching-hooks';
-import { getErrorMessage } from '../../helpers';
+import {
+  getErrorMessage,
+  useShoppingListsFetcher,
+} from 'commercetools-demo-shared-data-fetching-hooks';
 import { TShoppingList } from '../../types/generated/ctp';
 import { SuspendedRoute } from '@commercetools-frontend/application-shell';
 import { Switch } from 'react-router';
 import CustomerShoppingList from '../customer-shopping-list/customer-shopping-list';
 import { PaginatableDataTable } from 'commercetools-demo-shared-paginatable-data-table';
+import {
+  formatLocalizedString,
+  renderDefault,
+} from 'commercetools-demo-shared-helpers';
 
 type Props = { id: string };
 
@@ -73,21 +75,14 @@ export const CustomerShoppingLists: FC<Props> = ({ id }) => {
       }
       case 'name': {
         return formatLocalizedString(
-          {
-            name: transformLocalizedFieldToLocalizedString(
-              item.nameAllLocales ?? []
-            ),
-          },
-          {
-            key: 'name',
-            locale: dataLocale,
-            fallbackOrder: projectLanguages,
-            fallback: NO_VALUE_FALLBACK,
-          }
+          item.nameAllLocales,
+          dataLocale,
+          projectLanguages,
+          NO_VALUE_FALLBACK
         );
       }
       default:
-        return item[column.key as keyof TShoppingList];
+        return renderDefault(item[column.key as keyof TShoppingList]);
     }
   };
   return (

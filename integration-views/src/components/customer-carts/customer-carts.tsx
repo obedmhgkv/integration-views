@@ -1,11 +1,13 @@
 import { FC } from 'react';
-import { useCartsFetcher } from 'commercetools-demo-shared-data-fetching-hooks';
+import {
+  getErrorMessage,
+  useCartsFetcher,
+} from 'commercetools-demo-shared-data-fetching-hooks';
 import {
   useDataTableSortingState,
   usePaginationState,
 } from '@commercetools-uikit/hooks';
 import { ContentNotification } from '@commercetools-uikit/notifications';
-import { formatAddress, formatMoney, getErrorMessage } from '../../helpers';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import {
   PageContentFull,
@@ -28,6 +30,11 @@ import { TCart } from '../../types/generated/ctp';
 import { TColumn } from '@commercetools-uikit/data-table';
 import { TTone } from '@commercetools-uikit/stamp/dist/declarations/src/stamp';
 import Stamp from '@commercetools-uikit/stamp';
+import {
+  formatAddress,
+  formatMoney,
+  renderDefault,
+} from 'commercetools-demo-shared-helpers';
 
 type Props = { id: string };
 
@@ -106,8 +113,7 @@ export const CustomerCarts: FC<Props> = ({ id }) => {
       case 'billingAddress':
         return formatAddress(item.billingAddress);
       default:
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (item as any)[column.key] || '';
+        return renderDefault(item[column.key as keyof TCart]);
     }
   };
 

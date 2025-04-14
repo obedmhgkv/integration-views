@@ -8,6 +8,7 @@ import messages from './messages';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router';
 import {
+  getErrorMessage,
   graphQLErrorHandler,
   useCartDeleter,
   useCartFetcher,
@@ -16,7 +17,6 @@ import {
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { ContentNotification } from '@commercetools-uikit/notifications';
 import Text from '@commercetools-uikit/text';
-import { getErrorMessage } from '../../helpers';
 import Spacings from '@commercetools-uikit/spacings';
 import LoadingSpinner from '@commercetools-uikit/loading-spinner';
 import { useShowNotification } from '@commercetools-frontend/actions-global';

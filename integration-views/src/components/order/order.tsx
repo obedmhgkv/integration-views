@@ -2,16 +2,11 @@ import { FC, useMemo } from 'react';
 import { TLineItem } from '../../types/generated/ctp';
 import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import { ContentNotification } from '@commercetools-uikit/notifications';
-import { getErrorMessage } from '../../helpers';
 import Text from '@commercetools-uikit/text';
 import { InfoMainPage } from '@commercetools-frontend/application-components';
 import Card from '@commercetools-uikit/card';
 import Spacings from '@commercetools-uikit/spacings';
 import DataTable from '@commercetools-uikit/data-table';
-import {
-  formatLocalizedString,
-  transformLocalizedFieldToLocalizedString,
-} from '@commercetools-frontend/l10n';
 import { useCustomViewContext } from '@commercetools-frontend/application-shell-connectors';
 import Label from '@commercetools-uikit/label';
 import Grid from '@commercetools-uikit/grid';
@@ -25,7 +20,11 @@ import SecondaryButton from '@commercetools-uikit/secondary-button';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import { ComponentProps } from '../../routes';
 import Steps from 'commercetools-demo-shared-stepper';
-import { useOrderFetcher } from 'commercetools-demo-shared-data-fetching-hooks';
+import {
+  getErrorMessage,
+  useOrderFetcher,
+} from 'commercetools-demo-shared-data-fetching-hooks';
+import { formatLocalizedString } from 'commercetools-demo-shared-helpers';
 
 const Order: FC<ComponentProps> = ({ id }) => {
   const { dataLocale, projectLanguages, googleMapOrigin, googleMapKey } =
@@ -39,8 +38,8 @@ const Order: FC<ComponentProps> = ({ id }) => {
           ? context.environment.googleMapOrigin
           : undefined;
       return {
-        dataLocale: context.dataLocale,
-        projectLanguages: context.project?.languages,
+        dataLocale: context.dataLocale ?? '',
+        projectLanguages: context.project?.languages ?? [],
         googleMapKey: googleMapKey,
         googleMapOrigin: googleMapOrigin,
       };
@@ -200,17 +199,10 @@ const Order: FC<ComponentProps> = ({ id }) => {
                       );
                     case 'name':
                       return formatLocalizedString(
-                        {
-                          name: transformLocalizedFieldToLocalizedString(
-                            item.nameAllLocales ?? []
-                          ),
-                        },
-                        {
-                          key: 'name',
-                          locale: dataLocale,
-                          fallbackOrder: projectLanguages,
-                          fallback: NO_VALUE_FALLBACK,
-                        }
+                        item.nameAllLocales ?? [],
+                        dataLocale,
+                        projectLanguages,
+                        NO_VALUE_FALLBACK
                       );
                     default:
                       return null;

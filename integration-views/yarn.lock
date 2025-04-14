@@ -8203,20 +8203,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001578, caniuse-lite@^1.0.30001580:
-  version "1.0.30001585"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001585.tgz#0b4e848d84919c783b2a41c13f7de8ce96744401"
-  integrity sha512-yr2BWR1yLXQ8fMpdS/4ZZXpseBgE7o4g41x3a6AJOqZuOi+iE/WdJYAuZ6Y95i4Ohd2Y+9MzIWRR+uGABH4s3Q==
-
-caniuse-lite@^1.0.30001640:
-  version "1.0.30001642"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001642.tgz#6aa6610eb24067c246d30c57f055a9d0a7f8d05f"
-  integrity sha512-3XQ0DoRgLijXJErLSl+bLnJ+Et4KqV1PY6JJBGAFlsNsz31zeAIncyeZfLCabHK/jtSh+671RM9YMldxjUPZtA==
-
-caniuse-lite@^1.0.30001688:
-  version "1.0.30001707"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001707.tgz#c5e104d199e6f4355a898fcd995a066c7eb9bf41"
-  integrity sha512-3qtRjw/HQSMlDWf+X79N206fepf4SOOU6SQLMaq/0KkZLmSjPxAkBOQQ+FxbHKfHmYLZFfdWsO3KA90ceHPSnw==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001578, caniuse-lite@^1.0.30001580, caniuse-lite@^1.0.30001640, caniuse-lite@^1.0.30001688:
+  version "1.0.30001713"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001713.tgz"
+  integrity sha512-wCIWIg+A4Xr7NfhTuHdX+/FKh3+Op3LBbSp2N5Pfx6T/LhdQy3GTyoTg48BReaW/MyMNZAkTadsBtai3ldWK0Q==
 
 capital-case@^1.0.4:
   version "1.0.4"
@@ -8529,10 +8519,10 @@ commercetools-demo-shared-async-variant-selector@^0.0.1:
     "@emotion/react" "^11.10.5"
     react-intl "^6.3.2"
 
-commercetools-demo-shared-cart-handling@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/commercetools-demo-shared-cart-handling/-/commercetools-demo-shared-cart-handling-0.0.4.tgz#c1eb7a75ef0ee0ea67d2316479535b782b10d595"
-  integrity sha512-hqt+emy23vBnKJrGXANyp9m7y4HL2uKHioHex5UV6v2WqF4lDGZXAN8itKQMrmCDJTgxgCDucaNb9WeQsbKXBg==
+commercetools-demo-shared-cart-handling@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/commercetools-demo-shared-cart-handling/-/commercetools-demo-shared-cart-handling-0.0.10.tgz#8f6516f002d44dbb1c5083eac6d48df718eceafe"
+  integrity sha512-jI9TeSGS5GI1Uq8Z4VtN5kGAjJaSXXf5Vscw9flhdt5IXXPfkKebjmtkLIRp3vABfscu2n4ZBYHBFHGAVnCylQ==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
@@ -8566,12 +8556,13 @@ commercetools-demo-shared-cart-handling@^0.0.4:
     "@commercetools-uikit/tooltip" "^19.22.7"
     "@emotion/react" "^11.14.0"
     "@emotion/styled" "^11.14.0"
-    commercetools-demo-shared-paginatable-data-table "^0.0.1"
+    commercetools-demo-shared-helpers "^0.0.1"
+    commercetools-demo-shared-paginatable-data-table "^0.0.2"
     formik "^2.4.6"
     lodash "^4.17.21"
     memoize-one "^6.0.0"
     omit-empty-es "^1.2.0"
-    react-intl "^6.3.2"
+    react-intl "^6.4.7"
     reselect "4.1.8"
 
 commercetools-demo-shared-data-fetching-hooks@^0.0.5:
@@ -8591,10 +8582,21 @@ commercetools-demo-shared-data-fetching-hooks@^0.0.5:
     react-intl "^6.4.7"
     react-redux "7.2.9"
 
-commercetools-demo-shared-paginatable-data-table@^0.0.1:
+commercetools-demo-shared-helpers@^0.0.1:
   version "0.0.1"
-  resolved "https://registry.yarnpkg.com/commercetools-demo-shared-paginatable-data-table/-/commercetools-demo-shared-paginatable-data-table-0.0.1.tgz#686f888bf693d2dfaef381480cdd1864aaf91878"
-  integrity sha512-PeiTv7FJzxVnMIdg9zpVCyarjRaxPPAA7sw+HivSB/rhH6oGg7YaMr7Gx3aHma4yX7oefUgpL5hUG9YvhDg0FA==
+  resolved "https://registry.yarnpkg.com/commercetools-demo-shared-helpers/-/commercetools-demo-shared-helpers-0.0.1.tgz#21bc7271311fb1f8ddb0a714073592cfeac561d8"
+  integrity sha512-RMQqQ/KYKVo9ovUMrT0XpIUSlhNQPLTyildlvz3fBRhuWF2K5UxoZjrVDMcqp6rFo4U6k6/6aE8Ub1+FjVQ+JQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-frontend/constants" "^23.2.2"
+    "@commercetools-frontend/l10n" "^23.2.2"
+    react-intl "^6.4.7"
+
+commercetools-demo-shared-paginatable-data-table@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/commercetools-demo-shared-paginatable-data-table/-/commercetools-demo-shared-paginatable-data-table-0.0.2.tgz#fd9524b62534fdd0f8b8b3406d34c98a21e225d8"
+  integrity sha512-IDpMMnQT+qoqDEsyPnlG3trTbF6eN94LeGIYPj0+jCyyuvmVyQxPIri3JQnDoCGnV+FVbHE8QqDYhMa7oY6agA==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
@@ -8607,7 +8609,7 @@ commercetools-demo-shared-paginatable-data-table@^0.0.1:
     "@commercetools-uikit/text" "^19.22.7"
     "@commercetools-uikit/utils" "19.22.7"
     "@emotion/react" "^11.10.5"
-    react-intl "^6.3.2"
+    react-intl "^6.4.7"
 
 commercetools-demo-shared-stepper@^0.0.1:
   version "0.0.1"
@@ -14385,7 +14387,7 @@ react-from-dom@0.6.2:
   resolved "https://registry.yarnpkg.com/react-from-dom/-/react-from-dom-0.6.2.tgz#9da903a508c91c013b55afcd59348b8b0a39bdb4"
   integrity sha512-qvWWTL/4xw4k/Dywd41RBpLQUSq97csuv15qrxN+izNeLYlD9wn5W8LspbfYe5CWbaSdkZ72BsaYBPQf2x4VbQ==
 
-react-intl@^6.3.2, react-intl@^6.4.5:
+react-intl@^6.3.2:
   version "6.6.2"
   resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-6.6.2.tgz#97a044afa9cac65ae62f404c8bb9cbd3aec52d41"
   integrity sha512-IpW2IkLtGENSFlX3vfH11rjuCIsW0VyjT0Q1pPKMZPtT2z1FxLt4weFT5Ezti2TScT1xiyb3aQBFth9EB7jzAg==
