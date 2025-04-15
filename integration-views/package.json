@@ -66,6 +66,7 @@
     "@commercetools-uikit/text-input": "^19.22.7",
     "@commercetools/sync-actions": "^5.14.0",
     "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.14.0",
     "@formatjs/cli": "6.1.1",
     "@graphql-codegen/add": "^5.0.0",
     "@graphql-codegen/cli": "^5.0.0",

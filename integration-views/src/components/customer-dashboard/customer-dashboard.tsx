@@ -9,8 +9,6 @@ import {
 } from '@commercetools-uikit/icons';
 import { customProperties } from '@commercetools-uikit/design-system';
 import { useIntl } from 'react-intl';
-import Claims from '../claims/claims';
-import Card from '@commercetools-uikit/card';
 
 type Props = {};
 
@@ -135,15 +133,6 @@ export const CustomerDashboard: FC<Props> = ({}) => {
           />
         </Grid.Item>
       </Grid>
-      <div className="py-20">
-        <Grid gridAutoColumns="1lr">
-          <Grid.Item>
-            <Card theme="light" type="raised" className="my-20">
-              <Claims />
-            </Card>
-          </Grid.Item>
-        </Grid>
-      </div>
     </div>
   );
 };
