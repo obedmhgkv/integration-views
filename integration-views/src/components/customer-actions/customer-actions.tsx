@@ -45,8 +45,8 @@ export const CustomerActions: FC<Props> = ({ id }) => {
 
   const onClick = () => {
     customerCreateEmailVerificationToken({ id: id, ttlMinutes: 100 })
-      .then(({ data }) => {
-        const token = data?.customerCreateEmailVerificationToken?.value;
+      .then(({ customerCreateEmailVerificationToken }) => {
+        const token = customerCreateEmailVerificationToken?.value;
         if (token) {
           customerConfirmEmail({ tokenValue: token })
             .then(() => {

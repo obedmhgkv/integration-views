@@ -8582,10 +8582,10 @@ commercetools-demo-shared-cart-handling@^0.0.11:
     react-intl "^6.4.7"
     reselect "4.1.8"
 
-commercetools-demo-shared-data-fetching-hooks@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/commercetools-demo-shared-data-fetching-hooks/-/commercetools-demo-shared-data-fetching-hooks-0.0.5.tgz#d587af81d34254e2e64e53e440763e1a31a5bf8f"
-  integrity sha512-/bEkPHXEf35PScuBv5MAOEzHAtpBOWbdYd7NVEGY0ve+B+foTDW2AUbJV75Vo15GzHuYRd7Hjdr+E06BolqSBw==
+commercetools-demo-shared-data-fetching-hooks@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/commercetools-demo-shared-data-fetching-hooks/-/commercetools-demo-shared-data-fetching-hooks-0.0.11.tgz#5c106eb1356dbb4e969ede55672b13df1a81004e"
+  integrity sha512-Zw5FGWqqCkwnrzR4TZewtSFNObyu63Phu7xGaAanBKnLhrZBW2gr5oCTeU+5z3ZyCwtCxhSl+7EdNe8CkvADkQ==
   dependencies:
     "@apollo/client" "3.7.14"
     "@babel/runtime" "^7.20.13"
