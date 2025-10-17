@@ -11,7 +11,8 @@ const config = {
       initialProjectKey: 'tech-sales-good-store',
       hostUriPath:
         // '/tech-sales-good-store/orders/9a08bc59-3709-47ab-bae9-6654b85cad08/general',
-        '/tech-sales-good-store/customers/a5fc94a7-c479-4ed5-ac47-13d23890e725/general',
+        // '/tech-sales-good-store/customers/a5fc94a7-c479-4ed5-ac47-13d23890e725/general',
+        '/tech-sales-good-store/categories/fba234fa-cfc8-4506-ad91-dad0fe97dbc9/general',
     },
     production: {
       customViewId: '${env:CUSTOM_VIEW_ID}',
@@ -31,8 +32,14 @@ const config = {
       'view_customers',
       'view_shopping_lists',
       'view_products',
+      'view_types',
     ],
-    manage: ['manage_orders', 'manage_shopping_lists', 'manage_customers'],
+    manage: [
+      'manage_orders',
+      'manage_shopping_lists',
+      'manage_customers',
+      'manage_categories',
+    ],
   },
   type: 'CustomPanel',
   typeSettings: {

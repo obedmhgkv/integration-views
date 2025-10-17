@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Order from './components/order';
 import { useCustomViewContext } from '@commercetools-frontend/application-shell-connectors';
 import Customer from './components/customer';
+import Category from './components/category';
 
 type ApplicationRoutesProps = {
   children?: ReactNode;
@@ -20,6 +21,7 @@ const ApplicationRoutes = (_props: ApplicationRoutesProps) => {
   const mapping: MappingProps = {
     orders: Order,
     customers: Customer,
+    categories: Category,
   };
 
   if (hostUrl) {

@@ -1,9 +1,11 @@
 import { lazy } from 'react';
 import {
+  createApolloClient,
   CustomViewShell,
   setupGlobalErrorListener,
 } from '@commercetools-frontend/application-shell';
 import loadMessages from '../../load-messages';
+import { generatedIntrospection } from 'commercetools-demo-shared-helpers';
 
 // Here we split up the main (app) bundle with the actual application business logic.
 // Splitting by route is usually recommended and you can potentially have a splitting
@@ -16,8 +18,18 @@ const AsyncApplicationRoutes = lazy(
 // in order to catch possible errors on rendering/mounting.
 setupGlobalErrorListener();
 
+const configureApollo = () =>
+  createApolloClient({
+    cache: {
+      possibleTypes: generatedIntrospection.possibleTypes,
+    },
+  });
+
 const EntryPoint = () => (
-  <CustomViewShell applicationMessages={loadMessages}>
+  <CustomViewShell
+    applicationMessages={loadMessages}
+    apolloClient={configureApollo()}
+  >
     <AsyncApplicationRoutes />
   </CustomViewShell>
 );
