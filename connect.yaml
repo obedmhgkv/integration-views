@@ -14,7 +14,6 @@ deployAs:
            description: the fake sender address to be used
            required: true
            default: 'Adams-Lehmann-Straße+44,+80797+München'
-       securedConfiguration:
          - key: GOOGLE_MAP_KEY
            description: The Google Map Key to be used
            required: true
