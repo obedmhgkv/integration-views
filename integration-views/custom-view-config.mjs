@@ -8,10 +8,10 @@ const config = {
 
   env: {
     development: {
-      initialProjectKey: 'tech-sales-good-store',
+      initialProjectKey: 'kv-demo',
       //hostUriPath: '/tech-sales-good-store/orders/5838b628-38d2-47c1-8576-a1faefa1c21f/general'
       hostUriPath:
-        '/tech-sales-good-store/customers/a5fc94a7-c479-4ed5-ac47-13d23890e725/general',
+        '/kv-demo/customers/ed115212-3151-4040-a6c3-10dd7da03485/general',
     },
     production: {
       customViewId: '${env:CUSTOM_VIEW_ID}',
